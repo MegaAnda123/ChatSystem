@@ -14,12 +14,13 @@ public class Server {
     ReceiveString MessageReceiver = new ReceiveString(this);
 
     public void start() throws IOException, InterruptedException {
-        serverSocket = new ServerSocket(8888);
+        serverSocket = new ServerSocket(42069);
         ClientListener.start();
         MessageReceiver.start();
 
         if (Clients.size() ==0) {
             System.out.println("no clients connected");
+
         }
     }
 
@@ -29,11 +30,11 @@ public class Server {
         printWriter.flush();
     }
 
-    public String receiveString(Socket client) throws IOException {
-        InputStreamReader in = new InputStreamReader(client.getInputStream());
+    public String receiveString(Client client) throws IOException {
+        InputStreamReader in = new InputStreamReader(client.getSocket().getInputStream());
         BufferedReader bf = new BufferedReader(in);
         String out = bf.readLine();
-        sendStringToAllClients(Clients,out,null);
+        sendStringToAllClients(Clients,out,client);
         System.out.println(out);
         return out;
     }
@@ -50,7 +51,9 @@ public class Server {
 
     public void sendStringToAllClients(ArrayList<Client> Clients, String msg, @Nullable Client exclude) throws IOException {
         for (Client client : Clients) {
-            sendString(client, client.getName() + ": " + msg);
+            if(client!= exclude) {
+                sendString(client, exclude.getName() + ": " + msg);
+            }
         }
     }
 }

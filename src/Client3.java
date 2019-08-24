@@ -21,7 +21,7 @@ public class Client3 {
         while (connected==false) {
 
             try {
-                socket = new Socket("localhost", 8888);
+                socket = new Socket("83.243.160.197", 42069);
                 connected=true;
             } catch (ConnectException e) {
                 System.out.println("Failed to connect");
