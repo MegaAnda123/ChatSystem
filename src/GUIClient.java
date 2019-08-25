@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
-public class Client1 {
+public class GUIClient {
     Socket socket;
     ReceiveStringClient receiver = new ReceiveStringClient(this);
     boolean connected = false;
@@ -15,11 +15,6 @@ public class Client1 {
     boolean GUI = false;
     PrintWriter pr;
     ClientGUI clientGUI;
-
-    public static void main(String[] args) throws IOException, InterruptedException {
-        Client1 a = new Client1();
-        a.start(false,null);
-    }
 
     public void start(boolean GUIon, ClientGUI clientGUI) throws IOException, InterruptedException {
         GUI = GUIon;
@@ -53,9 +48,9 @@ public class Client1 {
     }
 
     public class ReceiveStringClient extends Thread {
-        Client1 client;
+        GUIClient client;
 
-        ReceiveStringClient(Client1 client) {
+        ReceiveStringClient(GUIClient client) {
             this.client = client;
         }
 

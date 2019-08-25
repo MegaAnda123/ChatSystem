@@ -21,7 +21,6 @@ public class ReceiveString extends Thread {
                         if (client.getSocket().getInputStream().available() != 0) {
                             try {
                                 System.out.println(this.server.receiveString(client));
-
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }

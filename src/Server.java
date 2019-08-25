@@ -1,3 +1,5 @@
+import javafx.application.Application;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -22,10 +24,14 @@ public class Server {
         ClientListener.start();
         MessageReceiver.start();
 
-        while (Clients.size() ==0) {
+        while (Clients.size() == 0) {
             System.out.println("no clients connected");
             TimeUnit.SECONDS.sleep(1);
         }
+
+        //while(true) {
+        //    System.out.println(Clients.get(0).getSocket().getInputStream().read());
+        //}
     }
 
     public void sendString(Client client, String msg) throws IOException {
@@ -39,7 +45,6 @@ public class Server {
         BufferedReader bf = new BufferedReader(in);
         String out = bf.readLine();
         sendStringToAllClients(Clients,out,client);
-        System.out.println(out);
         return out;
     }
 
@@ -56,6 +61,24 @@ public class Server {
     public void sendStringToAllClients(ArrayList<Client> Clients, String msg, Client sender) throws IOException {
         for (Client client : Clients) {
                 sendString(client, sender.getName() + ": " + msg);
+        }
+    }
+
+    class receiveData extends Thread {
+        private Server server;
+        private ArrayList<Client> clients;
+
+        public receiveData(Server server) {
+            this.server = server;
+        }
+
+        public void run() {
+            this.clients = server.getClients();
+            while (true) {
+                for(Client client : clients) {
+
+                }
+            }
         }
     }
 }

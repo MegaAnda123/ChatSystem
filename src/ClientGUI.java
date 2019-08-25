@@ -1,11 +1,9 @@
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.scene.control.TextField;
 import javax.swing.text.html.ListView;
-import java.awt.*;
 import java.io.IOException;
 import javafx.scene.control.TextArea;
 
@@ -13,17 +11,15 @@ public class ClientGUI extends Application {
     public TextField ChatTextField;
     public TextArea ChatArea;
     public ListView ClientList;
-    public Client1 client;
+    public GUIClient client;
 
     public void initialize() throws IOException, InterruptedException {
-        client = new Client1();
+        client = new GUIClient();
         client.start(true,this);
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        System.out.println("oooga");
-
     }
 
     public void ChatFieldTyping(KeyEvent ke) {
