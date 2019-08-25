@@ -11,13 +11,21 @@ public class Client1 {
     Socket socket;
     ReceiveStringClient receiver = new ReceiveStringClient(this);
     boolean connected = false;
+    private String newMessage;
+    boolean GUI = false;
+    PrintWriter pr;
+    ClientGUI clientGUI;
 
     public static void main(String[] args) throws IOException, InterruptedException {
         Client1 a = new Client1();
-        a.start();
+        a.start(false,null);
     }
 
-    public void start() throws IOException, InterruptedException {
+    public void start(boolean GUIon, ClientGUI clientGUI) throws IOException, InterruptedException {
+        GUI = GUIon;
+        if (clientGUI != null) {
+            this.clientGUI = clientGUI;
+        }
         while (connected==false) {
 
             try {
@@ -29,11 +37,11 @@ public class Client1 {
             }
         }
         Scanner reader = new Scanner(System.in);
-        PrintWriter pr = new PrintWriter(socket.getOutputStream());
+        pr = new PrintWriter(socket.getOutputStream());
         receiver.start();
 
 
-        while (true) {
+        while (GUI==false) {
             String str = reader.nextLine();
             pr.println(str);
             pr.flush();
@@ -59,6 +67,7 @@ public class Client1 {
                         InputStreamReader in = new InputStreamReader(client.getSocket().getInputStream());
                         BufferedReader bf = new BufferedReader(in);
                         String out = bf.readLine();
+                        clientGUI.displayNewMessage(out);
                         System.out.println(out);
                     }
                 } catch (IOException e) {
@@ -66,6 +75,11 @@ public class Client1 {
                 }
             }
         }
+    }
+
+    public void sendNewMessage(String msg) {
+        pr.println(msg);
+        pr.flush();
     }
 }
 

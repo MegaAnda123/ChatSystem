@@ -1,9 +1,8 @@
-import com.sun.istack.internal.Nullable;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 
 public class Server {
@@ -13,14 +12,19 @@ public class Server {
     AcceptClient ClientListener = new AcceptClient(this);
     ReceiveString MessageReceiver = new ReceiveString(this);
 
+    public static void main(String[] args) throws IOException, InterruptedException {
+        Server a = new Server();
+        a.start();
+    }
+
     public void start() throws IOException, InterruptedException {
         serverSocket = new ServerSocket(42069);
         ClientListener.start();
         MessageReceiver.start();
 
-        if (Clients.size() ==0) {
+        while (Clients.size() ==0) {
             System.out.println("no clients connected");
-
+            TimeUnit.SECONDS.sleep(1);
         }
     }
 
@@ -49,11 +53,9 @@ public class Server {
         return this.Clients;
     }
 
-    public void sendStringToAllClients(ArrayList<Client> Clients, String msg, @Nullable Client exclude) throws IOException {
+    public void sendStringToAllClients(ArrayList<Client> Clients, String msg, Client sender) throws IOException {
         for (Client client : Clients) {
-            if(client!= exclude) {
-                sendString(client, exclude.getName() + ": " + msg);
-            }
+                sendString(client, sender.getName() + ": " + msg);
         }
     }
 }
