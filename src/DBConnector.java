@@ -46,4 +46,27 @@ public class DBConnector{
         return null;
     }
 
+    // Returns a list of all usernames in users table
+    public boolean checkPas(String username, String hash) throws Exception{
+
+        try {
+            Connection con = getConnection();
+            Statement stm = con.createStatement();
+
+            String query = "SELECT hashpas FROM users WHERE username='"+username+"'";
+
+            ResultSet res = stm.executeQuery(query);
+
+
+             while(res.next()){
+
+             }
+
+            return false;
+
+        }catch (Exception e){System.out.println(e.getMessage());}
+
+        return false;
+    }
+
 }
