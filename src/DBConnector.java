@@ -115,4 +115,8 @@ public class DBConnector{
         return false;
     }
 
+    public void storeChatObject(Object object){
+
+    }
+
 }
