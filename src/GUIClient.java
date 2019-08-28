@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ConnectException;
 import java.net.Socket;
 import java.util.Scanner;
@@ -13,6 +10,7 @@ public class GUIClient {
     boolean connected = false;
     private String newMessage;
     boolean GUI = false;
+    DataOutputStream outStream;
     PrintWriter pr;
     ClientGUI clientGUI;
 
@@ -32,7 +30,8 @@ public class GUIClient {
             }
         }
         Scanner reader = new Scanner(System.in);
-        pr = new PrintWriter(socket.getOutputStream());
+        outStream = new DataOutputStream(socket.getOutputStream());
+        pr = new PrintWriter(outStream);
         receiver.start();
 
 
@@ -72,8 +71,15 @@ public class GUIClient {
         }
     }
 
-    public void sendNewMessage(String msg) {
+    public void sendNewMessage(String msg) throws IOException {
+        pr.println(1);
+        pr.flush();
+        outStream.flush();
         pr.println(msg);
+        pr.flush();
+    }
+    public void sendDataType(int type) {
+        pr.println(type);
         pr.flush();
     }
 }

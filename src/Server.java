@@ -1,9 +1,7 @@
-import javafx.application.Application;
-
 import java.io.*;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.concurrent.TimeUnit;
 
 
@@ -13,6 +11,7 @@ public class Server {
     ArrayList<Client> Clients = new ArrayList<>();
     AcceptClient ClientListener = new AcceptClient(this);
     ReceiveString MessageReceiver = new ReceiveString(this);
+    ReceiveData DataReceiver = new ReceiveData(this);
 
     public static void main(String[] args) throws IOException, InterruptedException {
         Server a = new Server();
@@ -22,7 +21,8 @@ public class Server {
     public void start() throws IOException, InterruptedException {
         serverSocket = new ServerSocket(42069);
         ClientListener.start();
-        MessageReceiver.start();
+        //MessageReceiver.start();
+        DataReceiver.start();
 
         while (Clients.size() == 0) {
             System.out.println("no clients connected");
@@ -64,20 +64,55 @@ public class Server {
         }
     }
 
-    class receiveData extends Thread {
+    private int getDataType(Client client) throws IOException {
+        int i;
+        InputStreamReader in = new InputStreamReader(client.getSocket().getInputStream());
+        BufferedReader bf = new BufferedReader(in);
+        try {
+            i = Integer.parseInt(bf.readLine());
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            i = 0;
+        }
+
+        return i;
+    }
+
+    private void dataReceived(Client client, int dataType) throws IOException {
+        System.out.println(dataType);
+        final int String = 1;
+        switch (dataType) {
+            case String:
+                receiveString(client);
+                break;
+        }
+    }
+
+    class ReceiveData extends Thread {
         private Server server;
         private ArrayList<Client> clients;
 
-        public receiveData(Server server) {
+        public ReceiveData(Server server) {
             this.server = server;
         }
 
         public void run() {
             this.clients = server.getClients();
-            while (true) {
-                for(Client client : clients) {
+                while (true) {
+                    try {
+                        for (Client client : clients) {
+                            try {
+                                if (client.getSocket().getInputStream().available() != 0) {
+                                    dataReceived(client, getDataType(client));
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                        }
 
-                }
+                    }
+                }   catch (ConcurrentModificationException e) {
+                        e.printStackTrace();
+                    }
             }
         }
     }

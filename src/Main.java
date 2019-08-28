@@ -10,11 +10,6 @@ public class Main extends Application {
             launch(args);
         }
 
-        /**
-         * Starts program and sets window title
-         * @param primaryStage
-         * @throws Exception
-         */
         @Override
         public void start(Stage primaryStage) throws Exception {
             Parent root = FXMLLoader.load(getClass().getResource("ClientGUI.fxml"));

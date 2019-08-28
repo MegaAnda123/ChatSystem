@@ -3,9 +3,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.scene.control.TextField;
-import javax.swing.text.html.ListView;
 import java.io.IOException;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.ListView;
 
 public class ClientGUI extends Application {
     public TextField ChatTextField;
@@ -19,10 +19,10 @@ public class ClientGUI extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
     }
 
-    public void ChatFieldTyping(KeyEvent ke) {
+    public void ChatFieldTyping(KeyEvent ke) throws IOException {
         if (ke.getCode().equals(KeyCode.ENTER)) {
             String chatText = ChatTextField.getText();
             client.sendNewMessage(chatText);
