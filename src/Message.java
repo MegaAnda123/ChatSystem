@@ -1,22 +1,25 @@
 public class Message {
 
-    private String data;
+    private String message;
     private String Date;
     private String Sender;
+    private String reciver;
 
 
-    public Message(String data, String Date, String Sender){
+    public Message(String data, String Date, String Sender, String reciver){
 
 
-        this.data = data;
+        this.message = data;
         this.Date = Date;
         this.Sender = Sender;
+        this.reciver = reciver;
+
 
 
     }
 
-    public String getData(){
-        return data;
+    public String getMessage(){
+        return message;
     }
 
     public String getDate(){
@@ -25,5 +28,9 @@ public class Message {
 
     public String getSender(){
         return Sender;
+    }
+
+    public String getReciver() {
+        return reciver;
     }
 }
