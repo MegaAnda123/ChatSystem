@@ -3,18 +3,16 @@ public class Message {
     private String message;
     private String Date;
     private String Sender;
-    private String reciver;
+    private String ServerName;
 
 
-    public Message(String data, String Date, String Sender, String reciver){
+    public Message(String data, String Date, String Sender, String serverName){
 
 
         this.message = data;
         this.Date = Date;
         this.Sender = Sender;
-        this.reciver = reciver;
-
-
+        this.ServerName = serverName;
 
     }
 
@@ -30,7 +28,7 @@ public class Message {
         return Sender;
     }
 
-    public String getReciver() {
-        return reciver;
+    public String getServerName() {
+        return ServerName;
     }
 }

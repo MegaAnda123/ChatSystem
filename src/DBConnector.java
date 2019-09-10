@@ -4,10 +4,24 @@ import java.sql.*;
 import java.util.ArrayList;
 
 import com.mysql.jdbc.Driver;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
+
+/**
+ * @Author Mikael Nilssen
+ * @Date September 2019
+ *
+ * Connector to sql database for chat app
+ * depends on jdbc sql connector external library.
+ */
 public class DBConnector{
 
-
+    /**
+     * Gets connection Object that is used in other functions to connect to your sql database.
+     * Password and Username is currently just hardcoded.
+     * @return Returns Connection Object
+     * @throws Exception
+     */
     public Connection getConnection() throws Exception{
         try{
             String host = "jdbc:mysql://localhost:3306/data";
@@ -25,13 +39,18 @@ public class DBConnector{
         return null;
     }
 
-
-    // Returns a list of all usernames in users table
-    public ArrayList<String> getUsernames() throws Exception{
+    /**
+     *  Get all usernames
+     * @param con Connection to database
+     * @return Arraylist"<String>" of all usernames in the users table
+     * @throws Exception
+     */
+    public ArrayList<String> getUsernames(Connection con) throws Exception{
 
         try {
-            Connection con = getConnection();
-            Statement stm = con.createStatement();
+            // Connects to database
+            Connection connection = con;
+            Statement stm = connection.createStatement();
 
             ResultSet res = stm.executeQuery("select * from users");
 
@@ -49,7 +68,12 @@ public class DBConnector{
         return null;
     }
 
-    //creates a sha256 hash of input string
+
+    /**
+     * Creates a SHA-256 hashed string from the input
+     * @param password A string that u want turned into a SHA-256 HASH
+     * @return HASH in SHA-256 Form
+     */
     public String createHash(String password){
 
         try {
@@ -81,13 +105,21 @@ public class DBConnector{
         return null;
     }
 
-    // Returns a list of all usernames in users table
-    public boolean checkPas(String username, String hash) throws Exception{
+
+    /**
+     * Checks if the username and hashed version of the password are correct towards the login info on the Database
+     * @param con Connection object
+     * @param username Login username
+     * @param hash SHA-256 Hash of password
+     * @return Returns a boolean
+     * @throws Exception
+     */
+    public boolean checkPas(Connection con, String username, String hash) throws Exception{
 
         try {
             // Connects to database
-            Connection con = getConnection();
-            Statement stm = con.createStatement();
+            Connection connection = con;
+            Statement stm = connection.createStatement();
 
             // SQL COMMAND
             String query = "SELECT hashpas FROM users WHERE username='"+username+"'";
@@ -115,8 +147,83 @@ public class DBConnector{
         return false;
     }
 
-    public void storeChatObject(Object object){
+    /**
+     * Stores a message object on the database
+     * @param con Connection object
+     * @param o Message object containing Message, sender, date, serverName
+     */
+    public void storeMessage(Connection con, Message o){
 
+        String message = o.getMessage();
+        String sender = o.getSender();
+        String date = o.getDate();
+        String serverName = o.getServerName();
+
+        try{
+
+            // Connects to database
+            Connection connection = con;
+            Statement stm = connection.createStatement();
+
+            // check if server exists
+
+            boolean tab = checkTable(connection,serverName,"data");
+
+
+            // Upload message to Database
+            if (tab) {
+                try {
+                    String queryMsg = "INSERT INTO " + serverName + " (message,sender,date) VALUES(" + message + "," + sender + "," + date + ");";
+                    stm.executeQuery(queryMsg);
+                } catch (Exception e) {
+                    System.out.println("Upload problem");
+                    System.out.println(e.getMessage());
+                }
+            }
+            else {
+                System.out.println("message was not uploaded due to missing server.");
+            }
+
+
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    /**
+     *  Checks all tables in the given schema and returns boolean if located
+     * @param con Connection object to sql server
+     * @param serverName name of the sql server table
+     * @param schemaName name of the sql schema the table is located in
+     * @return boolean of found or not
+     */
+    public boolean checkTable(Connection con, String serverName, String schemaName){
+
+        boolean serverExists = false;
+
+       try {
+           // Connects to database
+           Connection connection = con;
+           Statement stm = connection.createStatement();
+
+           //get tables
+           ResultSet servers = stm.executeQuery("SELECT * FROM information_schema.tables WHERE table_schema='"+schemaName+"';");
+
+           //checks all table name rows for servername
+           while(servers.next()){
+               if(servers.getString("table_name").equals(serverName)){
+                   serverExists = true;
+               }
+           }
+
+       }
+       catch (Exception e){
+           System.out.println(e.getMessage());
+       }
+
+       return serverExists;
     }
 
 }
