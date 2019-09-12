@@ -32,13 +32,21 @@ public class TestServer {
             if (inStream.available() != 0 && readingMessage==false) {
                 readingMessage = true;
                 readHeader(inStream);
-                System.out.println("nigga");
             }
         }
     }
 
     public void readHeader(InputStream inStream) throws IOException {
         BufferedReader bf = new BufferedReader(inStreamReader);
+
+        int ooga = 0;
+        while (ooga==0) {
+            if(inStream.available() != 0) {
+                readMessage(inStream);
+            }
+        }
+
+
         boolean headerReceived = false;
         while (headerReceived==false) {
             System.out.println("try");
@@ -60,10 +68,8 @@ public class TestServer {
                         break;
                 }
             } else {
-                System.out.println("fuckings headeren kom ikke først for helvete");
                 String str = bf.readLine();
                 messageArray.add(str);
-                System.out.println("jævla neger");
             }
         }
     }
@@ -103,5 +109,16 @@ public class TestServer {
              System.out.println(temp[i]);
          }
          return out;
+    }
+
+    public void readMessage (InputStream inStream) throws IOException {
+        BufferedReader bf = new BufferedReader(inStreamReader);
+        String message = "";
+        while (inStream.available() != 0) {
+            message += bf.readLine();
+        }
+
+        System.out.println("Message length" + message.length());
+        System.out.println(message);
     }
 }

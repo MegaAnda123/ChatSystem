@@ -72,14 +72,8 @@ public class GUIClient {
     }
 
     public void sendNewMessage(String msg) throws IOException {
-        pr.println(1);
-        pr.flush();
-        outStream.flush();
+        System.out.println("message length" + msg.length());
         pr.println(msg);
-        pr.flush();
-    }
-    public void sendDataType(int type) {
-        pr.println(type);
         pr.flush();
     }
 }

@@ -37,7 +37,7 @@ public class TestClient {
             Scanner reader = new Scanner(System.in);
             System.out.println("Press enter");
             String str = reader.nextLine();
-            sendConditionedString(outStream, str);
+            sendString(str);
         }
     }
 
@@ -66,5 +66,37 @@ public class TestClient {
             pr.println(strings[i]);
             pr.flush();
         }
+    }
+
+    public void sendLongString(OutputStream outStream, String string) {
+        PrintWriter pr = new PrintWriter(outStream);
+        int kiloLength = (string.length()/1000)+1;
+
+        String[] stringChunks = new String[kiloLength];
+        for (int i=0; i< kiloLength; i++) {
+            if(string.length() > (i+1)*1000) {
+                stringChunks[i] = (i + "@" + string.substring(i*1000, ((i+1)*1000)));
+            } else {
+                stringChunks[i] = (i + "@" + string.substring(i*1000));
+            }
+        }
+
+        String extraString = "";
+
+        for(int i=0; i < kiloLength; i++) {
+            extraString += stringChunks[i];
+        }
+        System.out.println(extraString.length());
+        System.out.println(extraString);
+        pr.println(extraString);
+        pr.flush();
+    }
+
+    public void sendString(String string) {
+        PrintWriter pr = new PrintWriter(outStream);
+
+        String out = "1@" + string;
+        pr.println(out);
+        pr.flush();
     }
 }

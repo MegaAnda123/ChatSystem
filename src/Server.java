@@ -11,7 +11,6 @@ public class Server {
     ArrayList<Client> Clients = new ArrayList<>();
     AcceptClient ClientListener = new AcceptClient(this);
     ReceiveString MessageReceiver = new ReceiveString(this);
-    ReceiveData DataReceiver = new ReceiveData(this);
 
     public static void main(String[] args) throws IOException, InterruptedException {
         Server a = new Server();
@@ -21,17 +20,12 @@ public class Server {
     public void start() throws IOException, InterruptedException {
         serverSocket = new ServerSocket(42069);
         ClientListener.start();
-        //MessageReceiver.start();
-        DataReceiver.start();
+        MessageReceiver.start();
 
         while (Clients.size() == 0) {
             System.out.println("no clients connected");
             TimeUnit.SECONDS.sleep(1);
         }
-
-        //while(true) {
-        //    System.out.println(Clients.get(0).getSocket().getInputStream().read());
-        //}
     }
 
     public void sendString(Client client, String msg) throws IOException {
@@ -43,7 +37,12 @@ public class Server {
     public String receiveString(Client client) throws IOException {
         InputStreamReader in = new InputStreamReader(client.getSocket().getInputStream());
         BufferedReader bf = new BufferedReader(in);
-        String out = bf.readLine();
+        String out = "";
+        while (client.getSocket().getInputStream().available() != 0) {
+            out += bf.readLine();
+        }
+        System.out.println("Message length" + out.length());
+        System.out.println(out);
         sendStringToAllClients(Clients,out,client);
         return out;
     }
@@ -85,35 +84,6 @@ public class Server {
             case String:
                 receiveString(client);
                 break;
-        }
-    }
-
-    class ReceiveData extends Thread {
-        private Server server;
-        private ArrayList<Client> clients;
-
-        public ReceiveData(Server server) {
-            this.server = server;
-        }
-
-        public void run() {
-            this.clients = server.getClients();
-                while (true) {
-                    try {
-                        for (Client client : clients) {
-                            try {
-                                if (client.getSocket().getInputStream().available() != 0) {
-                                    dataReceived(client, getDataType(client));
-                                }
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                        }
-
-                    }
-                }   catch (ConcurrentModificationException e) {
-                        e.printStackTrace();
-                    }
-            }
         }
     }
 }
