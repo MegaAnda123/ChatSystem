@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 import com.mysql.jdbc.Driver;
-import com.sun.org.apache.xpath.internal.operations.Bool;
+
 
 
 /**
@@ -226,4 +226,30 @@ public class DBConnector{
        return serverExists;
     }
 
+    public void createServerTable(Connection con, String serverName, String schemaName){
+
+        try{
+
+            String query = "CREATE TABLE "+ serverName+"(message_id INT auto_increment,message VARCHAR(400), date VARCHAR(20), sender VARCHAR(30), PRIMARY KEY (message_id));";
+
+            // Connects to database
+            Connection connection = con;
+            Statement stm = connection.createStatement();
+
+            //Check server
+            boolean exists = checkTable(con, serverName, schemaName);
+
+            if (!exists) {
+                // send query
+                stm.executeQuery(query);
+            }
+            else{
+                System.out.println("Server already exists");
+            }
+        }
+        catch (Exception e){
+
+        }
+
+    }
 }
