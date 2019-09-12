@@ -118,6 +118,14 @@ public class TestServer {
             message += bf.readLine();
         }
 
+        String[] splitTemp = message.split("@");
+
+        int dataType = Integer.parseInt(splitTemp[0]);
+        System.out.println("data type:" +  dataType);
+
+        message = message.substring(2);
+
+
         System.out.println("Message length" + message.length());
         System.out.println(message);
     }
