@@ -1,7 +1,6 @@
 import java.io.*;
 import java.net.ServerSocket;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.concurrent.TimeUnit;
 
 
@@ -28,9 +27,10 @@ public class Server {
         }
     }
 
-    public void sendString(Client client, String msg) throws IOException {
+    public void sendMessage(Client client, String msg, int type) throws IOException {
         PrintWriter printWriter = new PrintWriter(client.getSocket().getOutputStream());
-        printWriter.println(msg);
+
+        printWriter.println(type + "@" + msg);
         printWriter.flush();
     }
 
@@ -51,6 +51,7 @@ public class Server {
         ClientNumber++;
         Clients.add(new Client("Client" + ClientNumber,serverSocket.accept()));
         System.out.println("Client" + ClientNumber + " connected");
+        sendupdatedClientList();
         ClientListener.run();
     }
     public ArrayList<Client> getClients() {
@@ -59,31 +60,19 @@ public class Server {
 
     public void sendStringToAllClients(ArrayList<Client> Clients, String msg, Client sender) throws IOException {
         for (Client client : Clients) {
-                sendString(client, sender.getName() + ": " + msg);
+                sendMessage(client, sender.getName() + ": " + msg, 1);
         }
     }
 
-    private int getDataType(Client client) throws IOException {
-        int i;
-        InputStreamReader in = new InputStreamReader(client.getSocket().getInputStream());
-        BufferedReader bf = new BufferedReader(in);
-        try {
-            i = Integer.parseInt(bf.readLine());
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            i = 0;
+    public void sendupdatedClientList() throws IOException {
+        System.out.println("yes");
+        String message = "";
+        for (Client client : Clients) {
+            message += (client.getName() + ",");
         }
 
-        return i;
-    }
-
-    private void dataReceived(Client client, int dataType) throws IOException {
-        System.out.println(dataType);
-        final int String = 1;
-        switch (dataType) {
-            case String:
-                receiveString(client);
-                break;
+        for (Client client : Clients) {
+            sendMessage(client,message,3);
         }
     }
 }

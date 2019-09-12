@@ -1,18 +1,23 @@
 import java.io.*;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class GUIClient {
     Socket socket;
     ReceiveStringClient receiver = new ReceiveStringClient(this);
+    InputStream inStream;
+    InputStreamReader in;
+    BufferedReader bf;
     boolean connected = false;
     private String newMessage;
     boolean GUI = false;
     DataOutputStream outStream;
     PrintWriter pr;
     ClientGUI clientGUI;
+    ArrayList<String> clientsOnServer = new ArrayList<>();
 
     public void start(boolean GUIon, ClientGUI clientGUI) throws IOException, InterruptedException {
         GUI = GUIon;
@@ -31,7 +36,10 @@ public class GUIClient {
         }
         Scanner reader = new Scanner(System.in);
         outStream = new DataOutputStream(socket.getOutputStream());
+        inStream = socket.getInputStream();
         pr = new PrintWriter(outStream);
+        in = new InputStreamReader(socket.getInputStream());
+        bf = new BufferedReader(in);
         receiver.start();
 
 
@@ -58,11 +66,13 @@ public class GUIClient {
             while (true) {
                 try {
                     if (client.getSocket().getInputStream().available() != 0) {
-                        InputStreamReader in = new InputStreamReader(client.getSocket().getInputStream());
-                        BufferedReader bf = new BufferedReader(in);
-                        String out = bf.readLine();
-                        clientGUI.displayNewMessage(out);
-                        System.out.println(out);
+                        System.out.println("yes");
+                        processMessage();
+                        //InputStreamReader in = new InputStreamReader(client.getSocket().getInputStream());
+                        //BufferedReader bf = new BufferedReader(in);
+                        //String out = bf.readLine();
+                        //clientGUI.displayNewMessage(out);
+                        //System.out.println(out);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -75,6 +85,38 @@ public class GUIClient {
         System.out.println("message length" + msg.length());
         pr.println(msg);
         pr.flush();
+    }
+
+    public void processMessage() throws IOException {
+        String message ="";
+        while (inStream.available() != 0) {
+            message += bf.readLine();
+        }
+
+        String[] datatype = message.split("@");
+        //Remove datatype info on the first 2 characters in the message
+        message = message.substring(2);
+
+        switch (datatype[0]) {
+            //Message is a string
+            case "1":
+                clientGUI.displayNewMessage(message);
+                break;
+                //Message is a string from client with permission level 4
+            case "2":
+
+                break;
+                //Message is clients connected
+            case "3":
+                updateClientList(message);
+                break;
+        }
+    }
+
+    public void updateClientList(String message) {
+        String[] clients = message.split(",");
+
+        clientGUI.setClientList(clients);
     }
 }
 
