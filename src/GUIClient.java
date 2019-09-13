@@ -12,18 +12,12 @@ public class GUIClient {
     InputStreamReader in;
     BufferedReader bf;
     boolean connected = false;
-    private String newMessage;
-    boolean GUI = false;
     DataOutputStream outStream;
     PrintWriter pr;
     ClientGUI clientGUI;
-    ArrayList<String> clientsOnServer = new ArrayList<>();
 
-    public void start(boolean GUIon, ClientGUI clientGUI) throws IOException, InterruptedException {
-        GUI = GUIon;
-        if (clientGUI != null) {
-            this.clientGUI = clientGUI;
-        }
+    public void start(ClientGUI clientGUI) throws IOException, InterruptedException {
+        this.clientGUI = clientGUI;
         while (connected==false) {
 
             try {
@@ -34,26 +28,24 @@ public class GUIClient {
                 TimeUnit.SECONDS.sleep(1);
             }
         }
-        Scanner reader = new Scanner(System.in);
         outStream = new DataOutputStream(socket.getOutputStream());
         inStream = socket.getInputStream();
         pr = new PrintWriter(outStream);
         in = new InputStreamReader(socket.getInputStream());
         bf = new BufferedReader(in);
         receiver.start();
-
-
-        while (GUI==false) {
-            String str = reader.nextLine();
-            pr.println(str);
-            pr.flush();
-        }
     }
 
+    /**
+     * @return returns socket (for thread methods).
+     */
     public Socket getSocket() {
         return socket;
     }
 
+    /**
+     * Listens for messages form the server.
+     */
     public class ReceiveStringClient extends Thread {
         GUIClient client;
 
@@ -81,30 +73,40 @@ public class GUIClient {
         }
     }
 
+    /**
+     * Sends new message to the server.
+     * @param msg string message.
+     * @throws IOException
+     */
     public void sendNewMessage(String msg) throws IOException {
-        System.out.println("message length" + msg.length());
+        System.out.println("message length:" + msg.length());
         pr.println(msg);
         pr.flush();
     }
 
+    /**
+     * Reads all data from the socket if the message arrives in pieces.
+     * Checks what data type the message is and preforms corresponding action.
+     * @throws IOException
+     */
     public void processMessage() throws IOException {
         String message ="";
         while (inStream.available() != 0) {
             message += bf.readLine();
         }
 
-        String[] datatype = message.split("@");
-        //Remove datatype info on the first 2 characters in the message
+        String[] dataType = message.split("@");
+        //Remove dataType info on the first 2 characters in the message
         message = message.substring(2);
 
-        switch (datatype[0]) {
+        switch (dataType[0]) {
             //Message is a string
             case "1":
                 clientGUI.displayNewMessage(message);
                 break;
                 //Message is a string from client with permission level 4
             case "2":
-
+                System.out.println("TODO, code not added yet");
                 break;
                 //Message is clients connected
             case "3":
@@ -113,9 +115,12 @@ public class GUIClient {
         }
     }
 
+    /**
+     * Converts csv string of clients to array of clients and updates the GUI list of clients.
+     * @param message the csv string of clients.
+     */
     public void updateClientList(String message) {
         String[] clients = message.split(",");
-
         clientGUI.setClientList(clients);
     }
 }

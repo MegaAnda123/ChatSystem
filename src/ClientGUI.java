@@ -17,7 +17,7 @@ public class ClientGUI extends Application {
 
     public void initialize() throws IOException, InterruptedException {
         client = new GUIClient();
-        client.start(true,this);
+        client.start(this);
     }
 
     @Override
