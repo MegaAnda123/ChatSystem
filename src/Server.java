@@ -17,6 +17,13 @@ public class Server {
         a.start();
     }
 
+    /**
+     * Opens server socket.
+     * Starts to listen for incoming connections and handles them.
+     * Listens for messages from connected clients.
+     * @throws IOException
+     * @throws InterruptedException
+     */
     public void start() throws IOException, InterruptedException {
         serverSocket = new ServerSocket(42069);
         ClientListener.start();
@@ -25,6 +32,15 @@ public class Server {
         Clients.add(new Client("TEST1",""));
     }
 
+    /**
+     * Processes message from a given client.
+     * Reads the whole message if it arrives in several "packets" and pieces it together.
+     * Then regex the message to separate the command in the message.
+     * Then checks if the command is valid (sends error otherwise).
+     * Then executes the command.
+     * @param client client the command and message is from.
+     * @throws IOException
+     */
     public void processInMessage(Client client) throws IOException {
         InputStreamReader in = new InputStreamReader(client.getSocket().getInputStream());
         BufferedReader bf = new BufferedReader(in);
@@ -34,14 +50,22 @@ public class Server {
         }
         String[] chunks = string.split(" ");
         String command = chunks[0];
+        String message;
         try {
-            String message = string.substring((chunks[0].length() + 1));
+            message = string.substring((chunks[0].length() + 1));
+        } catch (StringIndexOutOfBoundsException e) {
+            message = "";
+        }
             switch (command) {
                 case "msg":
                     sendMessageToAllClients(Clients,command, client.getName() + " " + message);
                     break;
                 case "privmsg":
-                    //TODO
+                    if(message.isEmpty()) {
+                        processOutMessage(client.getSocket(),"cmderr","Missing data");
+                    } else {
+                        privateMessage(client, chunks, string);
+                    }
                     break;
                 case "logout":
                     logOut(client);
@@ -50,17 +74,38 @@ public class Server {
                     //TODO
                     break;
                 case "help":
-                    //TODO
+                    processOutMessage(client.getSocket(),"supported","msg privmsg logout ping help");
                     break;
                 default:
                     processOutMessage(client.getSocket(),"cmderr", "command not supported");
                     break;
             }
-        } catch (StringIndexOutOfBoundsException e) {
-            processOutMessage(client.getSocket(),"cmderr", "command not supported");
+    }
+
+    /**
+     * Decodes a private message command.
+     * Checks if target client exists and responds with a msgerr if it does not.
+     * If the target client exists the message is relayed to target client and conditioned with command prefix.
+     * @param client client the message is from.
+     * @param chunks regex'ed chunks of message from "processInMessage" method
+     * @param string Whole message from message client.
+     * @throws IOException
+     */
+    private void privateMessage(Client client, String[] chunks, String string) throws IOException {
+        if(getByName(chunks[1])==null) {
+            processOutMessage(client.getSocket(),"msgerr","User does not exist");
+        } else {
+            String message = string.substring((chunks[0].length()+chunks[1].length())+1);
+            processOutMessage(getByName(chunks[1]).getSocket(),"privmsg",client.getName() + message);
         }
     }
 
+    /**
+     * Logs user out.
+     * Sets that user to be available again and sends the updated client list to all clients connected.
+     * @param client the client that is logging out.
+     * @throws IOException
+     */
     public void logOut(Client client) throws IOException {
         client.getSocket().close();
         client.setAvailable(true);
@@ -68,8 +113,8 @@ public class Server {
     }
 
     /**
-     * Send message to a client.
-     * @param socket client the message will be sent to.
+     * Send message to a socket.
+     * @param socket socket the message will be sent to.
      * @param msg the message
      * @throws IOException
      */
@@ -79,12 +124,26 @@ public class Server {
         printWriter.flush();
     }
 
+    /**
+     * Conditions message to be protocol compatible and sends it to the specified socket.
+     * @param socket socket the message will be sent to.
+     * @param commandPrefix what command is being sent.
+     * @param string the message.
+     * @throws IOException
+     */
     public void processOutMessage(Socket socket, String commandPrefix, String string) throws IOException {
         String message;
         message = (commandPrefix + " " + string + "\n");
         sendMessage(socket,message);
     }
 
+    /**
+     * Reads the whole message if it arrives in several "packets" and pieces it together.
+     * Then regex the message to separate the command in the message.
+     * Checks if the command is a login related command.
+     * @param socket socket the message is from.
+     * @throws IOException
+     */
     public void processLoginMessage(Socket socket) throws IOException {
         InputStreamReader in = new InputStreamReader(socket.getInputStream());
         BufferedReader bf = new BufferedReader(in);
@@ -105,17 +164,27 @@ public class Server {
                     //TODO
                     break;
                 case "help":
-                    //TODO
+                    processOutMessage(socket,"supported","login signup help");
                     break;
                 default:
                     processOutMessage(socket,"cmderr", "command not supported");
                     break;
             }
         } catch (StringIndexOutOfBoundsException e) {
-            processOutMessage(socket,"cmderr", "command not supported");
+            if(command=="help") {
+                processOutMessage(socket,"supported","login signup help");
+            } else {
+                processOutMessage(socket, "cmderr", "missing data");
+            }
         }
     }
 
+    /**
+     * Checks if login info given by a socket is correct and replies with loginerr or loginok and then adds the socket to the client list.
+     * @param socket socket the login info is from
+     * @param message login info from socket
+     * @throws IOException
+     */
     public void checkLogin(Socket socket, String message) throws IOException {
         String[] chunks = message.split(",");
         String username = chunks[0];
@@ -125,14 +194,12 @@ public class Server {
         } catch (ArrayIndexOutOfBoundsException e) {
             password = "";
         }
-
         if(getByName(username) == null) {
             processOutMessage(socket,"loginerr","User does not exist");
         } else if (!getByName(username).getAvailable()) {
             processOutMessage(socket,"loginerr","Username already in use");
         } else {
             if(getByName(username).getHasPassword()) {
-                System.out.println("has password");
                 if (password.equals(getByName(username).getPassword())) {
                     Client client = getByName(username);
                     addClient(client, socket);
@@ -146,12 +213,21 @@ public class Server {
         }
     }
 
+    /**
+     * Accepts a socket connection and adds socket to login queue to listen for login commands from socket.
+     * @throws IOException
+     */
     public void addQueueClient() throws IOException {
         LoginQueue.add(serverSocket.accept());
         System.out.println("Client queued");
         ClientListener.run();
     }
 
+    /**
+     * Searches array of clients by name and returns that client or null if it did not find that client.
+     * @param username the username used to search the array.
+     * @return returns the found client or null.
+     */
     public Client getByName(String username) {
         Client out = null;
         for (Client client: Clients) {
@@ -163,7 +239,7 @@ public class Server {
     }
 
     /**
-     *Adds a client to the client list and sends the updated client list to all clients connected to the server.
+     * Moves client from login queue to client list and sends a updated client list to all users connected.
      * @throws IOException
      */
     public void addClient(Client client, Socket socket) throws IOException {
@@ -182,6 +258,9 @@ public class Server {
         return this.Clients;
     }
 
+    /**
+     * @return returns list of queued sockets to listen for login commands (for thread methods).
+     */
     public ArrayList<Socket> getLoginQueue() {
         return this.LoginQueue;
     }
@@ -241,6 +320,7 @@ public class Server {
 
     /**
      * Checks for any messages from all clients connected.
+     * And login queued clients.
      */
     public class ReceiveString extends Thread {
         private Server server;

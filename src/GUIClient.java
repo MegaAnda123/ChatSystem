@@ -1,5 +1,4 @@
 import javafx.application.Platform;
-
 import java.io.*;
 import java.net.ConnectException;
 import java.net.Socket;
@@ -18,10 +17,18 @@ public class GUIClient {
     PrintWriter pr;
     ClientGUI clientGUI;
 
+    /**
+     * Starts the client program.
+     * Connects to server socket.
+     * Opens login GUI.
+     * Listens for messages from server.
+     * @param clientGUI reference to GUI
+     * @throws IOException
+     * @throws InterruptedException
+     */
     public void start(ClientGUI clientGUI) throws IOException, InterruptedException {
         this.clientGUI = clientGUI;
         while (connected==false) {
-
             try {
                 socket = new Socket("83.243.160.197", 42069);
                 connected=true;
@@ -42,8 +49,11 @@ public class GUIClient {
     }
 
     /**
-     * Reads all data from the socket if the message arrives in pieces.
-     * Checks what data type the message is and preforms corresponding action.
+     * Processes message from server.
+     * Reads the whole message if it arrives in several "packets" and pieces it together.
+     * Then regex the message to separate the command in the message.
+     * Then checks if the command is valid.
+     * Then executes the command.
      * @throws IOException
      */
     public void processInMessage() throws IOException {
@@ -62,7 +72,7 @@ public class GUIClient {
                     clientGUI.displayNewMessage(message);
                     break;
                 case"privmsg":
-                    //TODO
+                    clientGUI.displayNewMessage(message);
                     break;
                 case"loginok":
                     LoginGUI.close();
@@ -80,6 +90,12 @@ public class GUIClient {
         } catch (StringIndexOutOfBoundsException e) {}
     }
 
+    /**
+     * Sends login info to server.
+     * @param username login username
+     * @param password login password (if left blank password will not be hashed and login without password will be attempted).
+     * @throws IOException
+     */
     public void tryLogin(String username, String password) throws IOException {
         if (username.isEmpty()) {
             AlertBox.display("ERROR", "Enter a username");
@@ -96,7 +112,7 @@ public class GUIClient {
 
     /**
      * Creates a SHA-256 hashed string from the input
-     * @param password A string that u want turned into a SHA-256 HASH
+     * @param password A string that you want turned into a SHA-256 HASH
      * @return HASH in SHA-256 Form
      */
     public String createHash(String password){
@@ -138,6 +154,38 @@ public class GUIClient {
     }
 
     /**
+     * Sends new message to the server.
+     * @param msg string message.
+     * @throws IOException
+     */
+    public void sendNewMessage(String msg) throws IOException {
+        System.out.println("message length:" + msg.length());
+        pr.println(msg);
+        pr.flush();
+    }
+
+    /**
+     * Conditions message to be compatible with protocol.
+     * @param commandPrefix what command is being sent.
+     * @param string the message.
+     * @throws IOException
+     */
+    public void processOutMessage(String commandPrefix, String string) throws IOException {
+        String message;
+        message = (commandPrefix + " " + string + "\n");
+        sendNewMessage(message);
+    }
+
+    /**
+     * Converts csv string of clients to array of clients and updates the GUI list of clients.
+     * @param message the csv string of clients.
+     */
+    public void updateClientList(String message) {
+        String[] clients = message.split(",");
+        clientGUI.setClientList(clients);
+    }
+
+    /**
      * Listens for messages form the server.
      */
     public class ReceiveStringClient extends Thread {
@@ -169,31 +217,4 @@ public class GUIClient {
             }
         }
     }
-
-    /**
-     * Sends new message to the server.
-     * @param msg string message.
-     * @throws IOException
-     */
-    public void sendNewMessage(String msg) throws IOException {
-        System.out.println("message length:" + msg.length());
-        pr.println(msg);
-        pr.flush();
-    }
-
-    public void processOutMessage(String commandPrefix, String string) throws IOException {
-        String message;
-        message = (commandPrefix + " " + string + "\n");
-        sendNewMessage(message);
-    }
-
-    /**
-     * Converts csv string of clients to array of clients and updates the GUI list of clients.
-     * @param message the csv string of clients.
-     */
-    public void updateClientList(String message) {
-        String[] clients = message.split(",");
-        clientGUI.setClientList(clients);
-    }
 }
-

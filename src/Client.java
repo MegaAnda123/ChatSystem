@@ -9,6 +9,7 @@ public class Client {
     private Socket socket;
     private boolean available = true;
     private boolean hasPassword;
+    private int timeOut;
 
     public Client(String name, String password) throws IOException {
         this.name = name;
@@ -46,5 +47,13 @@ public class Client {
 
     public String getPassword() {
         return password;
+    }
+
+    public void setTimeOut(int timeOut) {
+        this.timeOut = timeOut;
+    }
+
+    public int getTimeOut() {
+        return timeOut;
     }
 }
