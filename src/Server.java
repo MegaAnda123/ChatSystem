@@ -1,15 +1,15 @@
 import java.io.*;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
-import java.util.concurrent.TimeUnit;
 
 
 public class Server {
     ServerSocket serverSocket;
-    int ClientNumber = 0;
+    ArrayList<Socket> LoginQueue = new ArrayList<>();
     ArrayList<Client> Clients = new ArrayList<>();
-    AcceptClient ClientListener = new AcceptClient(this);
+    addClientToQueue ClientListener = new addClientToQueue(this);
     ReceiveString MessageReceiver = new ReceiveString(this);
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -21,43 +21,144 @@ public class Server {
         serverSocket = new ServerSocket(42069);
         ClientListener.start();
         MessageReceiver.start();
+        Clients.add(new Client("ADMIN","5d"));
+        Clients.add(new Client("TEST1",""));
+    }
 
-        while (Clients.size() == 0) {
-            System.out.println("no clients connected");
-            TimeUnit.SECONDS.sleep(1);
+    public void processInMessage(Client client) throws IOException {
+        InputStreamReader in = new InputStreamReader(client.getSocket().getInputStream());
+        BufferedReader bf = new BufferedReader(in);
+        String string = "";
+        while (client.getSocket().getInputStream().available() != 0) {
+            string += bf.readLine();
+        }
+        String[] chunks = string.split(" ");
+        String command = chunks[0];
+        try {
+            String message = string.substring((chunks[0].length() + 1));
+            switch (command) {
+                case "msg":
+                    sendMessageToAllClients(Clients,command, client.getName() + " " + message);
+                    break;
+                case "privmsg":
+                    //TODO
+                    break;
+                case "logout":
+                    logOut(client);
+                    break;
+                case "ping":
+                    //TODO
+                    break;
+                case "help":
+                    //TODO
+                    break;
+                default:
+                    processOutMessage(client.getSocket(),"cmderr", "command not supported");
+                    break;
+            }
+        } catch (StringIndexOutOfBoundsException e) {
+            processOutMessage(client.getSocket(),"cmderr", "command not supported");
         }
     }
 
+    public void logOut(Client client) throws IOException {
+        client.getSocket().close();
+        client.setAvailable(true);
+        sendUpdatedClientList();
+    }
+
     /**
-     * Sends message with data type identifier at start of message to a client.
-     * @param client client the data will be sent to.
+     * Send message to a client.
+     * @param socket client the message will be sent to.
      * @param msg the message
-     * @param type what data type the message contains (1:string, 2:admin string, 3:client list).
      * @throws IOException
      */
-    public void sendMessage(Client client, String msg, int type) throws IOException {
-        PrintWriter printWriter = new PrintWriter(client.getSocket().getOutputStream());
-
-        printWriter.println(type + "@" + msg);
+    public void sendMessage(Socket socket, String msg) throws IOException {
+        PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
+        printWriter.println(msg);
         printWriter.flush();
     }
 
-    /**
-     * Reads message from a client socket and rebuilds the whole string if it arrived in pieces.
-     * @param client the client the method will read from.
-     * @return returns the string message.
-     * @throws IOException
-     */
-    public String receiveString(Client client) throws IOException {
-        InputStreamReader in = new InputStreamReader(client.getSocket().getInputStream());
+    public void processOutMessage(Socket socket, String commandPrefix, String string) throws IOException {
+        String message;
+        message = (commandPrefix + " " + string + "\n");
+        sendMessage(socket,message);
+    }
+
+    public void processLoginMessage(Socket socket) throws IOException {
+        InputStreamReader in = new InputStreamReader(socket.getInputStream());
         BufferedReader bf = new BufferedReader(in);
-        String out = "";
-        while (client.getSocket().getInputStream().available() != 0) {
-            out += bf.readLine();
+        String string = "";
+        while (socket.getInputStream().available() != 0) {
+            string += bf.readLine();
         }
-        System.out.println("Message length" + out.length());
-        System.out.println(out);
-        sendStringToAllClients(Clients,out,client);
+
+        String[] chunks = string.split(" ");
+        String command = chunks[0];
+        try {
+            String message = string.substring((chunks[0].length() + 1));
+            switch (command) {
+                case "login":
+                    checkLogin(socket, message);
+                    break;
+                case "signup":
+                    //TODO
+                    break;
+                case "help":
+                    //TODO
+                    break;
+                default:
+                    processOutMessage(socket,"cmderr", "command not supported");
+                    break;
+            }
+        } catch (StringIndexOutOfBoundsException e) {
+            processOutMessage(socket,"cmderr", "command not supported");
+        }
+    }
+
+    public void checkLogin(Socket socket, String message) throws IOException {
+        String[] chunks = message.split(",");
+        String username = chunks[0];
+        String password;
+        try {
+            password = chunks[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            password = "";
+        }
+
+        if(getByName(username) == null) {
+            processOutMessage(socket,"loginerr","User does not exist");
+        } else if (!getByName(username).getAvailable()) {
+            processOutMessage(socket,"loginerr","Username already in use");
+        } else {
+            if(getByName(username).getHasPassword()) {
+                System.out.println("has password");
+                if (password.equals(getByName(username).getPassword())) {
+                    Client client = getByName(username);
+                    addClient(client, socket);
+                } else {
+                    processOutMessage(socket,"loginerr","Wrong password");
+                }
+            } else {
+                Client client = getByName(username);
+                addClient(client, socket);
+            }
+        }
+    }
+
+    public void addQueueClient() throws IOException {
+        LoginQueue.add(serverSocket.accept());
+        System.out.println("Client queued");
+        ClientListener.run();
+    }
+
+    public Client getByName(String username) {
+        Client out = null;
+        for (Client client: Clients) {
+            if(client.getName().equals(username)) {
+                out = client;
+            }
+        }
         return out;
     }
 
@@ -65,12 +166,13 @@ public class Server {
      *Adds a client to the client list and sends the updated client list to all clients connected to the server.
      * @throws IOException
      */
-    public void addClient() throws IOException {
-        ClientNumber++;
-        Clients.add(new Client("Client" + ClientNumber,serverSocket.accept()));
-        System.out.println("Client" + ClientNumber + " connected");
+    public void addClient(Client client, Socket socket) throws IOException {
+        client.setSocket(socket);
+        client.setAvailable(false);
+        System.out.println("Client " + client.getName() + " connected");
+        processOutMessage(client.getSocket(), "loginok", "");
+        LoginQueue.remove(socket);
         sendUpdatedClientList();
-        ClientListener.run();
     }
 
     /**
@@ -80,16 +182,21 @@ public class Server {
         return this.Clients;
     }
 
+    public ArrayList<Socket> getLoginQueue() {
+        return this.LoginQueue;
+    }
+
     /**
      * Sends a string message to all clients in a list.
      * @param Clients List of clients the string will be sent to.
      * @param msg The string the method will send.
-     * @param sender Who the message is from.
      * @throws IOException
      */
-    public void sendStringToAllClients(ArrayList<Client> Clients, String msg, Client sender) throws IOException {
+    public void sendMessageToAllClients(ArrayList<Client> Clients, String commandPrefix, String msg) throws IOException {
         for (Client client : Clients) {
-                sendMessage(client, sender.getName() + ": " + msg, 1);
+            if(!client.getAvailable()) {
+                processOutMessage(client.getSocket(), commandPrefix, msg);
+            }
         }
     }
 
@@ -98,31 +205,34 @@ public class Server {
      * @throws IOException
      */
     public void sendUpdatedClientList() throws IOException {
-        System.out.println("yes");
         String message = "";
         for (Client client : Clients) {
-            message += (client.getName() + ",");
+            if(!client.getAvailable()) {
+                message += (client.getName() + ",");
+            }
         }
 
         for (Client client : Clients) {
-            sendMessage(client,message,3);
+            if(!client.getAvailable()) {
+                processOutMessage(client.getSocket(),"clients",message);
+            }
         }
     }
 
     /**
-     * Accepts clients trying to connect and adds them to the server.
+     * Accepts clients to login queue and listens for login commands.
      */
-    public class AcceptClient extends Thread {
+    public class addClientToQueue extends Thread {
         private Server server;
 
-        public AcceptClient(Server server) {
+        public addClientToQueue(Server server) {
             this.server = server;
         }
 
         @Override
         public void run() {
             try {
-                this.server.addClient();
+                this.server.addQueueClient();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -135,6 +245,7 @@ public class Server {
     public class ReceiveString extends Thread {
         private Server server;
         private ArrayList<Client> Clients;
+        private ArrayList<Socket> LoginQueue;
 
         public ReceiveString(Server server) {
             this.server = server;
@@ -143,24 +254,36 @@ public class Server {
         @Override
         public void run() {
             this.Clients = server.getClients();
+            this.LoginQueue = server.getLoginQueue();
             while (true) {
                 try {
                     for (Client client : this.Clients) {
-                        try {
-                            if (client.getSocket().getInputStream().available() != 0) {
-                                try {
-                                    System.out.println(this.server.receiveString(client));
-                                } catch (IOException e) {
-                                    e.printStackTrace();
+                        if (!client.getAvailable()) {
+                            try {
+                                if (client.getSocket().getInputStream().available() != 0) {
+                                    try {
+                                        processInMessage(client);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    } catch(ConcurrentModificationException ignored){}
+                try {
+                    for (Socket socket : this.LoginQueue) {
+                        try {
+                            if (socket.getInputStream().available() != 0) {
+                                processLoginMessage(socket);
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
-                } catch (ConcurrentModificationException e) {
-                    e.printStackTrace();
-                }
+                } catch (ConcurrentModificationException ignored) {}
             }
         }
     }

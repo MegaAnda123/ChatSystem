@@ -5,10 +5,22 @@ import java.net.Socket;
 
 public class Client {
     private final String name;
-    private final Socket socket;
+    private final String password;
+    private Socket socket;
+    private boolean available = true;
+    private boolean hasPassword;
 
-    public Client(String name, Socket socket) throws IOException {
+    public Client(String name, String password) throws IOException {
         this.name = name;
+        this.password = password;
+        if(password.equals("")) {
+            hasPassword = false;
+        } else {
+            hasPassword = true;
+        }
+    }
+
+    public void setSocket(Socket socket) {
         this.socket = socket;
     }
 
@@ -18,5 +30,21 @@ public class Client {
 
     public String getName() {
         return name;
+    }
+
+    public boolean getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean bool) {
+        available = bool;
+    }
+
+    public boolean getHasPassword() {
+        return hasPassword;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

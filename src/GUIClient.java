@@ -1,8 +1,10 @@
+import javafx.application.Platform;
+
 import java.io.*;
 import java.net.ConnectException;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.util.concurrent.TimeUnit;
 
 public class GUIClient {
@@ -28,12 +30,104 @@ public class GUIClient {
                 TimeUnit.SECONDS.sleep(1);
             }
         }
+
         outStream = new DataOutputStream(socket.getOutputStream());
         inStream = socket.getInputStream();
         pr = new PrintWriter(outStream);
         in = new InputStreamReader(socket.getInputStream());
         bf = new BufferedReader(in);
         receiver.start();
+
+        LoginGUI.display(this);
+    }
+
+    /**
+     * Reads all data from the socket if the message arrives in pieces.
+     * Checks what data type the message is and preforms corresponding action.
+     * @throws IOException
+     */
+    public void processInMessage() throws IOException {
+        String string ="";
+        while (inStream.available() != 0) {
+            string += bf.readLine();
+        }
+        System.out.println(string);
+
+        String[] chunks = string.split(" ");
+        String command = chunks[0];
+        try {
+            String message = string.substring((chunks[0].length() + 1));
+            switch (command) {
+                case"msg":
+                    clientGUI.displayNewMessage(message);
+                    break;
+                case"privmsg":
+                    //TODO
+                    break;
+                case"loginok":
+                    LoginGUI.close();
+                    break;
+                case"clients":
+                    updateClientList(message);
+                    break;
+                case"oplevl":
+                    //TODO
+                    break;
+                default:
+                    AlertBox.display("ERROR",message);
+                    break;
+            }
+        } catch (StringIndexOutOfBoundsException e) {}
+    }
+
+    public void tryLogin(String username, String password) throws IOException {
+        if (username.isEmpty()) {
+            AlertBox.display("ERROR", "Enter a username");
+        } else {
+            if (password.isEmpty()) {
+                processOutMessage("login", username);
+            } else {
+                String hash = createHash(password);
+                //TODO change password to hash
+                processOutMessage("login", username + "," + password);
+            }
+        }
+    }
+
+    /**
+     * Creates a SHA-256 hashed string from the input
+     * @param password A string that u want turned into a SHA-256 HASH
+     * @return HASH in SHA-256 Form
+     */
+    public String createHash(String password){
+
+        try {
+            // set encoding
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            //turn string to bytes
+            byte[] encodedhash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+
+
+            StringBuffer hexString = new StringBuffer();
+
+            //Encodes
+            for (int i = 0; i < encodedhash.length; i++){
+                String hex = Integer.toHexString(0xff & encodedhash[i]);
+                if (hex.length()==1){
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+
+
+            String hash = hexString.toString();
+
+            return hash;
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 
     /**
@@ -58,13 +152,16 @@ public class GUIClient {
             while (true) {
                 try {
                     if (client.getSocket().getInputStream().available() != 0) {
-                        System.out.println("yes");
-                        processMessage();
-                        //InputStreamReader in = new InputStreamReader(client.getSocket().getInputStream());
-                        //BufferedReader bf = new BufferedReader(in);
-                        //String out = bf.readLine();
-                        //clientGUI.displayNewMessage(out);
-                        //System.out.println(out);
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    processInMessage();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -84,35 +181,10 @@ public class GUIClient {
         pr.flush();
     }
 
-    /**
-     * Reads all data from the socket if the message arrives in pieces.
-     * Checks what data type the message is and preforms corresponding action.
-     * @throws IOException
-     */
-    public void processMessage() throws IOException {
-        String message ="";
-        while (inStream.available() != 0) {
-            message += bf.readLine();
-        }
-
-        String[] dataType = message.split("@");
-        //Remove dataType info on the first 2 characters in the message
-        message = message.substring(2);
-
-        switch (dataType[0]) {
-            //Message is a string
-            case "1":
-                clientGUI.displayNewMessage(message);
-                break;
-                //Message is a string from client with permission level 4
-            case "2":
-                System.out.println("TODO, code not added yet");
-                break;
-                //Message is clients connected
-            case "3":
-                updateClientList(message);
-                break;
-        }
+    public void processOutMessage(String commandPrefix, String string) throws IOException {
+        String message;
+        message = (commandPrefix + " " + string + "\n");
+        sendNewMessage(message);
     }
 
     /**

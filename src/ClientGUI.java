@@ -27,7 +27,7 @@ public class ClientGUI extends Application {
     public void ChatFieldTyping(KeyEvent ke) throws IOException {
         if (ke.getCode().equals(KeyCode.ENTER)) {
             String chatText = ChatTextField.getText();
-            client.sendNewMessage(chatText);
+            client.processOutMessage("msg",chatText);
             ChatTextField.setText("");
         }
     }

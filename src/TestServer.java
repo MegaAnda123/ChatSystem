@@ -21,7 +21,8 @@ public class TestServer {
     public void start() throws IOException {
         serverSocket = new ServerSocket(8888);
         clientSocket = serverSocket.accept();
-        client = new Client("TestClient",clientSocket);
+        client = new Client("TestClient","");
+        client.setSocket(clientSocket);
         System.out.println("Client connected");
 
         inStream = client.getSocket().getInputStream();
