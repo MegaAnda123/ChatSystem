@@ -25,8 +25,8 @@ public class DBConnector{
     public Connection getConnection() throws Exception{
         try{
             String host = "jdbc:mysql://localhost:3306/data";
-            String username = "AdminBoy";
-            String pass = "ass";
+            String username = "root";
+            String pass = "giantass";
 
             Connection conn = DriverManager.getConnection(host, username, pass);
 
@@ -226,6 +226,12 @@ public class DBConnector{
        return serverExists;
     }
 
+    /**
+     * Creates a new table for storage of messages on that server
+     * @param con Connection object
+     * @param serverName    Name of Server table
+     * @param schemaName    Name of schema of table
+     */
     public void createServerTable(Connection con, String serverName, String schemaName){
 
         try{
