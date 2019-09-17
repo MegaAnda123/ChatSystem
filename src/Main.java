@@ -7,7 +7,8 @@ public class Main {
             DBConnector DB = new DBConnector();
             Connection con = DB.getConnection();
 
-            DB.createServerTable(con,"server1","data");
+
+
 
         }catch (Exception e){System.out.println(e.getMessage());}
     }

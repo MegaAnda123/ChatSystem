@@ -24,7 +24,7 @@ public class DBConnector{
      */
     public Connection getConnection() throws Exception{
         try{
-            String host = "jdbc:mysql://localhost:3306/data";
+            String host = "jdbc:mysql://localhost:3306/data?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
             String username = "root";
             String pass = "giantass";
 
@@ -193,7 +193,7 @@ public class DBConnector{
     }
 
     /**
-     *  Checks all tables in the given schema and returns boolean if located
+     *  Checks all tables in the given schema and returns boolean TRUE if located
      * @param con Connection object to sql server
      * @param serverName name of the sql server table
      * @param schemaName name of the sql schema the table is located in
@@ -208,12 +208,15 @@ public class DBConnector{
            Connection connection = con;
            Statement stm = connection.createStatement();
 
+           //Make Servername all small cases
+           String servername = serverName.toLowerCase();
+
            //get tables
            ResultSet servers = stm.executeQuery("SELECT * FROM information_schema.tables WHERE table_schema='"+schemaName+"';");
 
            //checks all table name rows for servername
            while(servers.next()){
-               if(servers.getString("table_name").equals(serverName)){
+               if(servers.getString("table_name").equals(servername)){
                    serverExists = true;
                }
            }
@@ -223,6 +226,9 @@ public class DBConnector{
            System.out.println(e.getMessage());
        }
 
+       if(serverExists){
+           System.out.println("Server already exists");
+       }
        return serverExists;
     }
 
@@ -235,27 +241,64 @@ public class DBConnector{
     public void createServerTable(Connection con, String serverName, String schemaName){
 
         try{
-
-            String query = "CREATE TABLE "+ serverName+"(message_id INT auto_increment,message VARCHAR(400), date VARCHAR(20), sender VARCHAR(30), PRIMARY KEY (message_id));";
-
-            // Connects to database
-            Connection connection = con;
-            Statement stm = connection.createStatement();
-
-            //Check server
-            boolean exists = checkTable(con, serverName, schemaName);
-
-            if (!exists) {
-                // send query
-                stm.executeQuery(query);
+            String[] s = serverName.split("\\s");
+            int wordsS = s.length;
+            if(wordsS != 1){
+                System.out.println("Servername must be 1 Word");
             }
-            else{
-                System.out.println("Server already exists");
+            else {
+
+                String query = "CREATE TABLE " + serverName + "(message_id INT auto_increment,message VARCHAR(400), date VARCHAR(20), sender VARCHAR(30), PRIMARY KEY (message_id));";
+
+                // Connects to database
+                Connection connection = con;
+                Statement stm = connection.createStatement();
+
+                //Check server
+                boolean exists = checkTable(con, serverName, schemaName);
+
+                if (!exists) {
+                    // send query
+                    System.out.println("Executing: " + query);
+                    stm.execute(query);
+                } else {
+                    System.out.println("Server already exists");
+                }
             }
         }
         catch (Exception e){
-
+            e.printStackTrace();
         }
 
     }
+
+    /**
+     * Adds a user to the user table on the server
+     * @param con Connection object for sql interaction
+     * @param username Username in app
+     * @param email Email for login
+     * @param hashedPassword a hashed version of the password
+     * @param joined Date person joined the server
+     * @param Level Premisiion level
+     */
+    public void addUser(Connection con, String username, String email, String hashedPassword, String joined, int Level ){
+
+        try {
+            // Create statement
+            Connection connection = con;
+            Statement stm = connection.createStatement();
+
+            // Query SQL
+            String query = "INSERT INTO users (username, email, hashedPassword, joined, PLevel) VALUES ('"+username+"','"+email+"','"+hashedPassword+"','"+joined+"',"+Level+");";
+
+            // Send query
+            System.out.println("Ran this query: "+query);
+            stm.execute(query);
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
