@@ -1,6 +1,3 @@
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.Socket;
 
 public class Client {
@@ -9,9 +6,9 @@ public class Client {
     private Socket socket;
     private boolean available = true;
     private boolean hasPassword;
-    private int timeOut;
+    private int timeOut = 10;
 
-    public Client(String name, String password) throws IOException {
+    public Client(String name, String password) {
         this.name = name;
         this.password = password;
         if(password.equals("")) {
@@ -55,5 +52,9 @@ public class Client {
 
     public int getTimeOut() {
         return timeOut;
+    }
+
+    public void decrementTimeOut() {
+        timeOut--;
     }
 }

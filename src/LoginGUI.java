@@ -4,10 +4,13 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.RadioButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.awt.*;
 import java.io.IOException;
@@ -23,9 +26,11 @@ public class LoginGUI {
     public static void display(GUIClient client) {
         window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle("Enter username and password");
+        window.setTitle("Login");
 
         window.setMinWidth(250);
+        window.setMinHeight(180);
+        window.setResizable(false);
 
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10,10,10,10));
@@ -45,25 +50,44 @@ public class LoginGUI {
         GridPane.setConstraints(passwordField,1,2);
 
         javafx.scene.control.Button loginButton = new Button("Login");
-        GridPane.setConstraints(loginButton,1,6);
 
-        grid.getChildren().addAll(usernameLabel,usernameField,passwordLabel,passwordField,loginButton);
+        javafx.scene.control.RadioButton signupButton = new RadioButton("Signup");
 
-        Scene scene = new Scene(grid, 300,300);
+        HBox hBox = new HBox(10);
+        hBox.getChildren().addAll(loginButton,signupButton);
+        GridPane.setConstraints(hBox,1,5);
+
+        grid.getChildren().addAll(usernameLabel,usernameField,passwordLabel,passwordField,hBox);
+
+        Scene scene = new Scene(grid, 10,10);
         window.setScene(scene);
+
+        window.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                System.exit(0);
+            }
+        });
 
         loginButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                try {
-                    client.tryLogin(usernameField.getText(),passwordField.getText());
-                } catch (IOException e) {
-                    e.printStackTrace();
+                System.out.println(signupButton.isSelected());
+                if (signupButton.isSelected()) {
+                    try {
+                        client.trySignup(usernameField.getText(), passwordField.getText());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        client.tryLogin(usernameField.getText(), passwordField.getText());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
         window.showAndWait();
-
-
     }
 }

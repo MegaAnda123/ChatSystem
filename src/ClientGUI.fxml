@@ -29,7 +29,7 @@
     </VBox>
   </left>
   <top>
-    <MenuBar>
+    <MenuBar id="UI">
       <menus>
         <Menu mnemonicParsing="false" text="File">
           <items>

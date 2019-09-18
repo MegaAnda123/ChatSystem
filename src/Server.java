@@ -3,16 +3,19 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
+import java.util.concurrent.TimeUnit;
 
 
 public class Server {
-    ServerSocket serverSocket;
-    ArrayList<Socket> LoginQueue = new ArrayList<>();
-    ArrayList<Client> Clients = new ArrayList<>();
-    addClientToQueue ClientListener = new addClientToQueue(this);
-    ReceiveString MessageReceiver = new ReceiveString(this);
+    private ServerSocket serverSocket;
+    private ArrayList<Socket> LoginQueue = new ArrayList<>();
+    private ArrayList<Client> Clients = new ArrayList<>();
+    private addClientToQueue ClientListener = new addClientToQueue(this);
+    private ReceiveString MessageReceiver = new ReceiveString(this);
+    private timeOutClients timeOutClients = new timeOutClients(this);
+    private int timeOutResetValue = 10;
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException {
         Server a = new Server();
         a.start();
     }
@@ -24,12 +27,14 @@ public class Server {
      * @throws IOException
      * @throws InterruptedException
      */
-    public void start() throws IOException, InterruptedException {
+    public void start() throws IOException {
         serverSocket = new ServerSocket(42069);
         ClientListener.start();
         MessageReceiver.start();
-        Clients.add(new Client("ADMIN","5d"));
+        timeOutClients.start();
         Clients.add(new Client("TEST1",""));
+        Clients.add(new Client("TEST2",""));
+        Clients.add(new Client("TEST3",""));
     }
 
     /**
@@ -71,6 +76,9 @@ public class Server {
                     logOut(client);
                     break;
                 case "ping":
+                    client.setTimeOut(timeOutResetValue);
+                    break;
+                case "loadchat":
                     //TODO
                     break;
                 case "help":
@@ -161,7 +169,7 @@ public class Server {
                     checkLogin(socket, message);
                     break;
                 case "signup":
-                    //TODO
+                    signUp(socket,message);
                     break;
                 case "help":
                     processOutMessage(socket,"supported","login signup help");
@@ -176,6 +184,42 @@ public class Server {
             } else {
                 processOutMessage(socket, "cmderr", "missing data");
             }
+        }
+    }
+
+    public void signUp(Socket socket, String message) throws IOException {
+        String[] chunks = message.split(",");
+        System.out.println(chunks.length);
+        if(chunks.length>0 && chunks.length<3) {
+            String username = chunks[0];
+            String password;
+            try {
+                password = chunks[1];
+            } catch (ArrayIndexOutOfBoundsException e) {
+                password = "";
+            }
+            if (!username.isEmpty()) {
+                if (!(username == null)) {
+                    if (!(username.contains(" "))) {
+                        if(getByName(username)==null) {
+                            Client client = new Client(username, password);
+                            client.setSocket(socket);
+                            Clients.add(client);
+                            processOutMessage(socket, "signupok", "");
+                        } else {
+                            processOutMessage(socket, "signuperr", "Username taken");
+                        }
+                    } else {
+                        processOutMessage(socket, "signuperr", "Username can not contain \" \" or ,");
+                    }
+                } else {
+                    processOutMessage(socket, "signuperr", "Looking for exploits huh?");
+                }
+            } else {
+                processOutMessage(socket, "signuperr", "Enter a username");
+            }
+        } else {
+            processOutMessage(socket,"signuperr","Wrong format");
         }
     }
 
@@ -329,12 +373,12 @@ public class Server {
 
         public ReceiveString(Server server) {
             this.server = server;
+            this.Clients = server.getClients();
+            this.LoginQueue = server.getLoginQueue();
         }
 
         @Override
         public void run() {
-            this.Clients = server.getClients();
-            this.LoginQueue = server.getLoginQueue();
             while (true) {
                 try {
                     for (Client client : this.Clients) {
@@ -364,6 +408,42 @@ public class Server {
                         }
                     }
                 } catch (ConcurrentModificationException ignored) {}
+            }
+        }
+    }
+
+    public class timeOutClients extends Thread {
+        private ArrayList<Client> Clients;
+
+        public timeOutClients(Server server) {
+            this.Clients = server.getClients();
+        }
+
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    for (Client client : this.Clients) {
+                        if (!client.getAvailable())
+                            try {
+                                if (client.getTimeOut() < 5) {
+                                    processOutMessage(client.getSocket(), "ping", "your session will time out soon, return ping to continue connection");
+                                }
+                                if (client.getTimeOut() < 1) {
+                                    System.out.println(client + " timed out");
+                                    logOut(client);
+                                }
+                                client.decrementTimeOut();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                    }
+                } catch (ConcurrentModificationException ignored) {}
+                try {
+                    TimeUnit.SECONDS.sleep(2);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

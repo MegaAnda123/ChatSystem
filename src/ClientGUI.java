@@ -4,8 +4,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.scene.control.TextField;
 import java.io.IOException;
-import java.util.ArrayList;
-
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ListView;
 
@@ -44,6 +42,5 @@ public class ClientGUI extends Application {
         for(String client : newClientList) {
             ClientList.getItems().add(client);
         }
-
     }
 }

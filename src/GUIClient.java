@@ -16,6 +16,8 @@ public class GUIClient {
     DataOutputStream outStream;
     PrintWriter pr;
     ClientGUI clientGUI;
+    String usernameCache;
+    String passwordCache;
 
     /**
      * Starts the client program.
@@ -77,14 +79,23 @@ public class GUIClient {
                 case"loginok":
                     LoginGUI.close();
                     break;
+                case"signupok":
+                    tryLogin(usernameCache,passwordCache);
+                    break;
                 case"clients":
                     updateClientList(message);
                     break;
-                case"oplevl":
-                    //TODO
+                case"ping":
+                    processOutMessage("ping","");
+                    break;
+                case"loginerr":
+                    AlertBox.display("Login error",message);
+                    break;
+                case"signuperr":
+                    AlertBox.display("Sign up error",message);
                     break;
                 default:
-                    AlertBox.display("ERROR",message);
+                    AlertBox.display("ERROR","Unknown error:\n" + string);
                     break;
             }
         } catch (StringIndexOutOfBoundsException e) {}
@@ -97,16 +108,24 @@ public class GUIClient {
      * @throws IOException
      */
     public void tryLogin(String username, String password) throws IOException {
-        if (username.isEmpty()) {
-            AlertBox.display("ERROR", "Enter a username");
+        usernameCache="";
+        passwordCache="";
+        if (password.isEmpty()) {
+            processOutMessage("login", username);
         } else {
-            if (password.isEmpty()) {
-                processOutMessage("login", username);
-            } else {
-                String hash = createHash(password);
-                //TODO change password to hash
-                processOutMessage("login", username + "," + password);
-            }
+            String hash = createHash(password);
+            processOutMessage("login", username + "," + hash);
+        }
+    }
+
+    public void trySignup(String username, String password) throws IOException {
+        usernameCache = username;
+        passwordCache = password;
+        if (password.isEmpty()) {
+            processOutMessage("signup", username);
+        } else {
+            String hash = createHash(password);
+            processOutMessage("signup", username + "," + hash);
         }
     }
 
