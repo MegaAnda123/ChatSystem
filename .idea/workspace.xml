@@ -1,24 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="Java Socket app" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="1b1331b8-1f48-48f9-9fa5-4b62182e62cc" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Java Socket app/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Java Socket app/Client.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Java Socket app/GUIClient$ReceiveStringClient$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Java Socket app/GUIClient$ReceiveStringClient$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Java Socket app/GUIClient$ReceiveStringClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Java Socket app/GUIClient$ReceiveStringClient.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Java Socket app/GUIClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Java Socket app/GUIClient.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Java Socket app/LoginGUI$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Java Socket app/LoginGUI$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Java Socket app/LoginGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Java Socket app/LoginGUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Java Socket app/Server$ReceiveString.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Java Socket app/Server$ReceiveString.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Java Socket app/Server$addClientToQueue.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Java Socket app/Server$addClientToQueue.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Java Socket app/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Java Socket app/Server.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ClientGUI.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/ClientGUI.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ClientGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ClientGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUIClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUIClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/LoginGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/LoginGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Java Socket app/META-INF/Java Socket app.kotlin_module" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -36,17 +26,17 @@
         <entry file="file://$PROJECT_DIR$/src/ClientGUI.fxml">
           <provider editor-type-id="JavaFX-Scene-Builder" />
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="17" column="11" lean-forward="true" selection-start-line="17" selection-start-column="11" selection-end-line="17" selection-end-column="11" />
+            <state relative-caret-position="279">
+              <caret line="17" column="11" selection-start-line="17" selection-start-column="11" selection-end-line="17" selection-end-column="11" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="306">
-              <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
+              <caret line="20" selection-start-line="20" selection-end-line="20" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#820#821#0" expanded="true" />
@@ -59,7 +49,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ClientGUI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-51">
+            <state relative-caret-position="-87">
               <caret column="38" selection-start-column="38" selection-end-column="38" />
             </state>
           </provider>
@@ -68,8 +58,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/GUIClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret line="66" lean-forward="true" selection-start-line="66" selection-end-line="66" />
+            <state relative-caret-position="-1311">
+              <caret line="66" selection-start-line="66" selection-end-line="66" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="docComment;method#start#0;class#GUIClient#0" />
@@ -107,11 +97,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Server.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="13" column="68" lean-forward="true" selection-start-line="13" selection-start-column="68" selection-end-line="13" selection-end-column="68" />
+            <state relative-caret-position="197">
+              <caret line="30" selection-start-line="30" selection-end-line="30" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="docComment;method#start#0;class#Server#0" />
@@ -234,11 +224,6 @@
             <path>
               <item name="ChatSystem" type="b2602c69:ProjectViewProjectNode" />
               <item name="ChatSystem" type="462c0819:PsiDirectoryNode" />
-              <item name="out" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ChatSystem" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ChatSystem" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -252,11 +237,11 @@
     <property name="Repository.Attach.Annotations" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1568824648087" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1568827817918" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/out/artifacts" />
+    <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
   </component>
@@ -360,6 +345,10 @@
       <toRun name="TestServer" type="Application" />
       <method v="2" />
     </configuration>
+    <configuration name="Java Socket app.jar" type="JarApplication" factoryName="JAR Application" temporary="true">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/out/artifacts/Java_Socket_app_jar/Java Socket app.jar" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Application.Client" />
       <item itemvalue="Application.Server" />
@@ -371,7 +360,13 @@
       <item itemvalue="Application.TestClient" />
       <item itemvalue="Compound.Test" />
       <item itemvalue="Compound.Unnamed" />
+      <item itemvalue="JAR Application.Java Socket app.jar" />
     </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JAR Application.Java Socket app.jar" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -386,28 +381,36 @@
     </task>
     <servers />
   </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Designer" order="0" />
       <window_info id="UI Designer" order="1" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Favorites" order="3" sideWeight="0.5024" side_tool="true" weight="0.25266525" />
       <window_info id="Image Layers" order="4" />
-      <window_info content_ui="combo" id="Project" order="5" sideWeight="0.4976" visible="true" weight="0.26332623" />
+      <window_info active="true" content_ui="combo" id="Project" order="5" sideWeight="0.4976" visible="true" weight="0.26332623" />
       <window_info id="Structure" order="6" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="0" weight="0.32936078" />
-      <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.5117271" side_tool="true" visible="true" weight="0.30552545" />
-      <window_info anchor="bottom" id="Messages" order="2" sideWeight="0.47228146" weight="0.32936078" />
-      <window_info anchor="bottom" id="Version Control" order="3" sideWeight="0.49946696" weight="0.32936078" />
+      <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.5133262" side_tool="true" visible="true" weight="0.30552545" />
+      <window_info anchor="bottom" id="Messages" order="2" sideWeight="0.4717484" weight="0.32936078" />
+      <window_info anchor="bottom" id="Version Control" order="3" sideWeight="0.4989339" weight="0.32936078" />
       <window_info anchor="bottom" id="Message" order="4" />
       <window_info anchor="bottom" id="Find" order="5" />
-      <window_info active="true" anchor="bottom" id="Run" order="6" sideWeight="0.48827294" visible="true" weight="0.30552545" />
+      <window_info anchor="bottom" id="Run" order="6" sideWeight="0.48667377" visible="true" weight="0.30552545" />
       <window_info anchor="bottom" id="Debug" order="7" sideWeight="0.49946696" weight="0.3997833" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="10" />
+      <window_info anchor="bottom" id="TODO" order="10" sideWeight="0.4989339" weight="0.32936078" />
       <window_info anchor="right" id="Theme Preview" order="0" />
       <window_info anchor="right" id="Capture Analysis" order="1" />
       <window_info anchor="right" id="Palette&#9;" order="2" />
@@ -605,14 +608,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ClientGUI.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="11" lean-forward="true" selection-start-line="17" selection-start-column="11" selection-end-line="17" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Client.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
@@ -628,67 +623,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/LoginGUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="66" column="51" selection-start-line="66" selection-start-column="51" selection-end-line="66" selection-end-column="51" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#469#470#0" expanded="true" />
-            <element signature="e#499#500#0" expanded="true" />
-            <element signature="e#2286#2287#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#820#821#0" expanded="true" />
-            <element signature="e#874#875#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ClientGUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-51">
-          <caret column="38" selection-start-column="38" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/GUIClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="66" lean-forward="true" selection-start-line="66" selection-end-line="66" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="docComment;method#start#0;class#GUIClient#0" />
-            <element signature="docComment;method#processInMessage#0;class#GUIClient#0" />
-            <element signature="docComment;method#tryLogin#0;class#GUIClient#0" />
-            <element signature="docComment;method#createHash#0;class#GUIClient#0" />
-            <element signature="docComment;method#getSocket#0;class#GUIClient#0" />
-            <element signature="e#1507#1537#1" />
-            <element signature="e#5555#5556#0" expanded="true" />
-            <element signature="docComment;method#sendNewMessage#0;class#GUIClient#0" />
-            <element signature="method#sendNewMessage#0;class#GUIClient#0" />
-            <element signature="docComment;method#processOutMessage#0;class#GUIClient#0" />
-            <element signature="method#processOutMessage#0;class#GUIClient#0" />
-            <element signature="docComment;method#updateClientList#0;class#GUIClient#0" />
-            <element signature="method#updateClientList#0;class#GUIClient#0" />
-            <element signature="docComment;class#ReceiveStringClient#0;class#GUIClient#0" />
-            <element signature="class#ReceiveStringClient#0;class#GUIClient#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Server.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="68" lean-forward="true" selection-start-line="13" selection-start-column="68" selection-end-line="13" selection-end-column="68" />
+        <state relative-caret-position="197">
+          <caret line="30" selection-start-line="30" selection-end-line="30" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="docComment;method#start#0;class#Server#0" />
@@ -730,16 +668,87 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/GUIClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1311">
+          <caret line="66" selection-start-line="66" selection-end-line="66" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="docComment;method#start#0;class#GUIClient#0" />
+            <element signature="docComment;method#processInMessage#0;class#GUIClient#0" />
+            <element signature="docComment;method#tryLogin#0;class#GUIClient#0" />
+            <element signature="docComment;method#createHash#0;class#GUIClient#0" />
+            <element signature="docComment;method#getSocket#0;class#GUIClient#0" />
+            <element signature="e#1507#1537#1" />
+            <element signature="e#5555#5556#0" expanded="true" />
+            <element signature="docComment;method#sendNewMessage#0;class#GUIClient#0" />
+            <element signature="method#sendNewMessage#0;class#GUIClient#0" />
+            <element signature="docComment;method#processOutMessage#0;class#GUIClient#0" />
+            <element signature="method#processOutMessage#0;class#GUIClient#0" />
+            <element signature="docComment;method#updateClientList#0;class#GUIClient#0" />
+            <element signature="method#updateClientList#0;class#GUIClient#0" />
+            <element signature="docComment;class#ReceiveStringClient#0;class#GUIClient#0" />
+            <element signature="class#ReceiveStringClient#0;class#GUIClient#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ClientGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-87">
+          <caret column="38" selection-start-column="38" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/LoginGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="66" column="51" selection-start-line="66" selection-start-column="51" selection-end-line="66" selection-end-column="51" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#469#470#0" expanded="true" />
+            <element signature="e#499#500#0" expanded="true" />
+            <element signature="e#2286#2287#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ClientGUI.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="279">
+          <caret line="17" column="11" selection-start-line="17" selection-start-column="11" selection-end-line="17" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="20" selection-start-line="20" selection-end-line="20" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#820#821#0" expanded="true" />
+            <element signature="e#874#875#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
   </component>
   <component name="masterDetails">
     <states>
       <state key="ArtifactsStructureConfigurable.UI">
         <settings>
-          <artifact-editor />
+          <artifact-editor>
+            <show-content>
+              <type id="artifact" />
+            </show-content>
+          </artifact-editor>
+          <last-edited>Java Socket app</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>
