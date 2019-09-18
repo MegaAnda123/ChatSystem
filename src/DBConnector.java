@@ -3,10 +3,6 @@ import java.security.MessageDigest;
 import java.sql.*;
 import java.util.ArrayList;
 
-import com.mysql.jdbc.Driver;
-
-
-
 /**
  * @Author Mikael Nilssen
  * @Date September 2019
@@ -26,7 +22,7 @@ public class DBConnector{
         try{
             String host = "jdbc:mysql://localhost:3306/data?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
             String username = "root";
-            String pass = "giantass";
+            String pass = "ass1";
 
             Connection conn = DriverManager.getConnection(host, username, pass);
 

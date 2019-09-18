@@ -46,7 +46,7 @@ public class Server {
      * @param client client the command and message is from.
      * @throws IOException
      */
-    public void processInMessage(Client client) throws IOException {
+    private void processInMessage(Client client) throws IOException {
         InputStreamReader in = new InputStreamReader(client.getSocket().getInputStream());
         BufferedReader bf = new BufferedReader(in);
         String string = "";
@@ -139,7 +139,7 @@ public class Server {
      * @param string the message.
      * @throws IOException
      */
-    public void processOutMessage(Socket socket, String commandPrefix, String string) throws IOException {
+    private void processOutMessage(Socket socket, String commandPrefix, String string) throws IOException {
         String message;
         message = (commandPrefix + " " + string + "\n");
         sendMessage(socket,message);
@@ -152,7 +152,7 @@ public class Server {
      * @param socket socket the message is from.
      * @throws IOException
      */
-    public void processLoginMessage(Socket socket) throws IOException {
+    private void processLoginMessage(Socket socket) throws IOException {
         InputStreamReader in = new InputStreamReader(socket.getInputStream());
         BufferedReader bf = new BufferedReader(in);
         String string = "";
@@ -187,7 +187,7 @@ public class Server {
         }
     }
 
-    public void signUp(Socket socket, String message) throws IOException {
+    private void signUp(Socket socket, String message) throws IOException {
         String[] chunks = message.split(",");
         System.out.println(chunks.length);
         if(chunks.length>0 && chunks.length<3) {
@@ -229,7 +229,7 @@ public class Server {
      * @param message login info from socket
      * @throws IOException
      */
-    public void checkLogin(Socket socket, String message) throws IOException {
+    private void checkLogin(Socket socket, String message) throws IOException {
         String[] chunks = message.split(",");
         String username = chunks[0];
         String password;
@@ -261,7 +261,7 @@ public class Server {
      * Accepts a socket connection and adds socket to login queue to listen for login commands from socket.
      * @throws IOException
      */
-    public void addQueueClient() throws IOException {
+    private void addQueueClient() throws IOException {
         LoginQueue.add(serverSocket.accept());
         System.out.println("Client queued");
         ClientListener.run();
@@ -286,7 +286,7 @@ public class Server {
      * Moves client from login queue to client list and sends a updated client list to all users connected.
      * @throws IOException
      */
-    public void addClient(Client client, Socket socket) throws IOException {
+    private void addClient(Client client, Socket socket) throws IOException {
         client.setSocket(socket);
         client.setAvailable(false);
         System.out.println("Client " + client.getName() + " connected");
@@ -306,7 +306,7 @@ public class Server {
     /**
      * @return returns list of queued sockets to listen for login commands (for thread methods).
      */
-    public ArrayList<Socket> getLoginQueue() {
+    private ArrayList<Socket> getLoginQueue() {
         return this.LoginQueue;
     }
 
@@ -316,7 +316,7 @@ public class Server {
      * @param msg The string the method will send.
      * @throws IOException
      */
-    public void sendMessageToAllClients(ArrayList<Client> Clients, String commandPrefix, String msg) throws IOException {
+    private void sendMessageToAllClients(ArrayList<Client> Clients, String commandPrefix, String msg) throws IOException {
         for (Client client : Clients) {
             if(!client.getAvailable()) {
                 processOutMessage(client.getSocket(), commandPrefix, msg);
@@ -328,7 +328,7 @@ public class Server {
      * Sends client list to all clients connected to the server.
      * @throws IOException
      */
-    public void sendUpdatedClientList() throws IOException {
+    private void sendUpdatedClientList() throws IOException {
         String message = "";
         for (Client client : Clients) {
             if(!client.getAvailable()) {
@@ -349,7 +349,7 @@ public class Server {
     public class addClientToQueue extends Thread {
         private Server server;
 
-        public addClientToQueue(Server server) {
+        addClientToQueue(Server server) {
             this.server = server;
         }
 
@@ -372,7 +372,7 @@ public class Server {
         private ArrayList<Client> Clients;
         private ArrayList<Socket> LoginQueue;
 
-        public ReceiveString(Server server) {
+        ReceiveString(Server server) {
             this.server = server;
             this.Clients = server.getClients();
             this.LoginQueue = server.getLoginQueue();
@@ -416,7 +416,7 @@ public class Server {
     public class timeOutClients extends Thread {
         private ArrayList<Client> Clients;
 
-        public timeOutClients(Server server) {
+        timeOutClients(Server server) {
             this.Clients = server.getClients();
         }
 
