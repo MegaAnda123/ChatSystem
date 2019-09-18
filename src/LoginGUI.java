@@ -23,7 +23,7 @@ public class LoginGUI {
         window.close();
     }
 
-    public static void display(GUIClient client) {
+    public static void display(final GUIClient client) {
         window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Login");
@@ -51,7 +51,7 @@ public class LoginGUI {
 
         javafx.scene.control.Button loginButton = new Button("Login");
 
-        javafx.scene.control.RadioButton signupButton = new RadioButton("Signup");
+        final javafx.scene.control.RadioButton signupButton = new RadioButton("Signup");
 
         HBox hBox = new HBox(10);
         hBox.getChildren().addAll(loginButton,signupButton);
