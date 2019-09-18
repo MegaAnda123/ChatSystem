@@ -13,7 +13,7 @@ public class Server {
     private addClientToQueue ClientListener = new addClientToQueue(this);
     private ReceiveString MessageReceiver = new ReceiveString(this);
     private timeOutClients timeOutClients = new timeOutClients(this);
-    private int timeOutResetValue = 10;
+    private int timeOutResetValue = 5;
 
     public static void main(String[] args) throws IOException {
         Server a = new Server();
@@ -293,6 +293,7 @@ public class Server {
         processOutMessage(client.getSocket(), "loginok", "");
         LoginQueue.remove(socket);
         sendUpdatedClientList();
+        client.setTimeOut(timeOutResetValue);
     }
 
     /**
@@ -430,7 +431,7 @@ public class Server {
                                     processOutMessage(client.getSocket(), "ping", "your session will time out soon, return ping to continue connection");
                                 }
                                 if (client.getTimeOut() < 1) {
-                                    System.out.println(client + " timed out");
+                                    System.out.println(client.getName() + " timed out");
                                     logOut(client);
                                 }
                                 client.decrementTimeOut();
