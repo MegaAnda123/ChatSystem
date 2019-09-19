@@ -1,4 +1,5 @@
 import java.net.Socket;
+import java.sql.Connection;
 
 public class Client {
     private final String name;
@@ -7,6 +8,8 @@ public class Client {
     private boolean available = true;
     private boolean hasPassword;
     private int timeOut = 10;
+    private DBConnector DB;
+    private Connection con;
 
     public Client(String name, String password) {
         this.name = name;
@@ -15,6 +18,12 @@ public class Client {
             hasPassword = false;
         } else {
             hasPassword = true;
+        }
+        DB = new DBConnector();
+        try {
+            con = DB.getConnection();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -43,7 +52,9 @@ public class Client {
     }
 
     public String getPassword() {
-        return password;
+        String hash = DB.getPassword(con,name);
+
+        return hash;
     }
 
     public void setTimeOut(int timeOut) {

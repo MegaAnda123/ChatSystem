@@ -22,7 +22,7 @@ public class DBConnector{
         try{
             String host = "jdbc:mysql://localhost:3306/data?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
             String username = "root";
-            String pass = "ass1";
+            String pass = "giantass";
 
             Connection conn = DriverManager.getConnection(host, username, pass);
 
@@ -55,6 +55,7 @@ public class DBConnector{
             // cycles through each row and gets the string in column username and adds to array
             while(res.next()){
                 result.add(res.getString("username"));
+                System.out.println("Username found: "+res.getString("username"));
             }
 
             return result;
@@ -108,7 +109,6 @@ public class DBConnector{
      * @param username Login username
      * @param hash SHA-256 Hash of password
      * @return Returns a boolean
-     * @throws Exception
      */
     public boolean checkPas(Connection con, String username, String hash) throws Exception{
 
@@ -168,21 +168,17 @@ public class DBConnector{
 
             // Upload message to Database
             if (tab) {
-                try {
-                    String queryMsg = "INSERT INTO " + serverName + " (message,sender,date) VALUES(" + message + "," + sender + "," + date + ");";
-                    stm.executeQuery(queryMsg);
-                } catch (Exception e) {
-                    System.out.println("Upload problem");
-                    System.out.println(e.getMessage());
-                }
+                String queryMsg = "INSERT INTO " + serverName + " (message,sender,date) VALUES('" + message + "','" + sender + "','" + date + "');";
+                stm.execute(queryMsg);
             }
             else {
-                System.out.println("message was not uploaded due to missing server.");
+                System.out.println("DBConnector storeMessage ERROR: Message was not uploaded due to missing server.");
             }
 
 
         }
         catch (Exception e){
+            System.out.println("Upload problem");
             System.out.println(e.getMessage());
         }
 
@@ -222,9 +218,6 @@ public class DBConnector{
            System.out.println(e.getMessage());
        }
 
-       if(serverExists){
-           System.out.println("Server already exists");
-       }
        return serverExists;
     }
 
@@ -240,11 +233,11 @@ public class DBConnector{
             String[] s = serverName.split("\\s");
             int wordsS = s.length;
             if(wordsS != 1){
-                System.out.println("Servername must be 1 Word");
+                System.out.println("ERROR: serverName must be 1 Word");
             }
             else {
 
-                String query = "CREATE TABLE " + serverName + "(message_id INT auto_increment,message VARCHAR(400), date VARCHAR(20), sender VARCHAR(30), PRIMARY KEY (message_id));";
+                String query = "CREATE TABLE " + serverName + "(message_id INT auto_increment,message VARCHAR(700), date VARCHAR(20), sender VARCHAR(30), PRIMARY KEY (message_id));";
 
                 // Connects to database
                 Connection connection = con;
@@ -257,8 +250,7 @@ public class DBConnector{
                     // send query
                     System.out.println("Executing: " + query);
                     stm.execute(query);
-                } else {
-                    System.out.println("Server already exists");
+                    System.out.println("Creating table since it does not exist");
                 }
             }
         }
@@ -297,4 +289,97 @@ public class DBConnector{
         }
     }
 
+    /**
+     * Returns passsword of selected user
+     * @param con Sql Connection Object
+     * @param username The username of the client
+     * @return Returns Hashed version of password
+     */
+    public String getPassword(Connection con, String username){
+        String Hashpas = null;
+
+        try {
+            //Create statement
+            Connection connection = con;
+            Statement stm = connection.createStatement();
+
+            // SQL Statement
+            String query = "SELECT hashedPassword FROM users WHERE username='"+username+"';";
+
+            ResultSet res = stm.executeQuery(query);
+
+            // Get first pas in returned string
+            if (res.next()){
+                Hashpas = res.getString("hashedPassword");
+            }
+
+
+        }catch (SQLException e) {
+            e.getStackTrace();
+        }
+
+        return Hashpas;
+    }
+
+    /**
+     * Checks if username already exists in database
+     * @param con Sql Connection Object
+     * @param username Username for user
+     * @return Returns true if username exists, returns false if not
+     */
+    public boolean checkUsername(Connection con, String username){
+
+        boolean exists = false;
+
+        try {
+            //get all usernames
+            ArrayList<String> users = getUsernames(con);
+
+            // check al usernames
+            for (String user:users) {
+                if(username.equals(user)){
+                    exists = true;
+                }
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return exists;
+    }
+
+    /**
+     * Returns all messages from a message server
+     * @param con SQL Connection Object
+     * @param serverName Name of sql Table
+     * @return Returns ArrayList<String> of all messages
+     */
+    public ArrayList<String> getMessagesFromServer(Connection con, String serverName){
+
+        ArrayList<String> messages = new ArrayList<>();
+        try {
+            //Create statement
+            Connection connection = con;
+            Statement stm = connection.createStatement();
+
+            // SQL Query
+            String query = "SELECT message FROM "+serverName;
+
+            // Get result from database
+            ResultSet res = stm.executeQuery(query);
+
+            //Get messages
+
+            while(res.next()){
+                messages.add(res.getString("message"));
+            }
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return messages;
+    }
 }
