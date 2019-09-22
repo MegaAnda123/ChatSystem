@@ -401,10 +401,12 @@ public class Server {
                 try {
                     for (Socket socket : this.LoginQueue) {
                         try {
-                            if (socket.getInputStream().available() != 0) {
-                                processLoginMessage(socket);
-                            }
-                        } catch (IOException e) {
+                            try {
+                                if (socket.getInputStream().available() != 0) {
+                                    processLoginMessage(socket);
+                                }
+                            } catch (NullPointerException ignored) {}
+                        } catch (IOException e)   {
                             e.printStackTrace();
                         }
                     }

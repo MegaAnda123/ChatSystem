@@ -32,7 +32,7 @@ public class GUIClient {
         this.clientGUI = clientGUI;
         while (connected==false) {
             try {
-                socket = new Socket("83.243.160.197", 42069);
+                socket = new Socket("83.243.176.75", 42069);
                 connected=true;
             } catch (ConnectException e) {
                 System.out.println("Failed to connect");
