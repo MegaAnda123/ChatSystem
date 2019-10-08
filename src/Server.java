@@ -179,7 +179,7 @@ public class Server {
                     break;
             }
         } catch (StringIndexOutOfBoundsException e) {
-            if(command=="help") {
+            if(command.equals("help")) {
                 processOutMessage(socket,"supported","login signup help");
             } else {
                 processOutMessage(socket, "cmderr", "missing data");
@@ -368,12 +368,10 @@ public class Server {
      * And login queued clients.
      */
     public class ReceiveString extends Thread {
-        private Server server;
         private ArrayList<Client> Clients;
         private ArrayList<Socket> LoginQueue;
 
         ReceiveString(Server server) {
-            this.server = server;
             this.Clients = server.getClients();
             this.LoginQueue = server.getLoginQueue();
         }

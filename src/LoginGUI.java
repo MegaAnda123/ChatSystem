@@ -2,10 +2,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
+import javafx.scene.control.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -24,8 +26,8 @@ public class LoginGUI {
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Login");
 
-        window.setMinWidth(250);
-        window.setMinHeight(180);
+        window.setMinWidth(350);
+        window.setMinHeight(200);
         window.setResizable(false);
 
         GridPane grid = new GridPane();
@@ -33,27 +35,41 @@ public class LoginGUI {
         grid.setVgap(8);
         grid.setHgap(10);
 
-        javafx.scene.control.Label usernameLabel = new javafx.scene.control.Label("Username");
+        Label serverIpLabel = new Label("Server IP");
+        GridPane.setConstraints(serverIpLabel,0,0);
+
+        final TextField serverIpField = new TextField();
+        serverIpField.setPromptText("Default port 42069");
+
+        final Button connectButton = new Button("Connect");
+        connectButton.setMinWidth(80);
+
+        Label usernameLabel = new Label("Username");
         GridPane.setConstraints(usernameLabel,0,1);
 
-        final javafx.scene.control.TextField usernameField = new javafx.scene.control.TextField();
+        final TextField usernameField = new TextField();
         GridPane.setConstraints(usernameField,1,1);
 
-        javafx.scene.control.Label passwordLabel = new javafx.scene.control.Label("Password");
+        Label passwordLabel = new Label("Password");
         GridPane.setConstraints(passwordLabel,0,2);
 
-        final javafx.scene.control.TextField passwordField = new javafx.scene.control.PasswordField();
+        final TextField passwordField = new PasswordField();
         GridPane.setConstraints(passwordField,1,2);
 
-        javafx.scene.control.Button loginButton = new Button("Login");
+        final Button loginButton = new Button("Login");
+        loginButton.setDisable(true);
 
-        final javafx.scene.control.RadioButton signupButton = new RadioButton("Signup");
+        final RadioButton signupButton = new RadioButton("Signup");
 
-        HBox hBox = new HBox(10);
-        hBox.getChildren().addAll(loginButton,signupButton);
-        GridPane.setConstraints(hBox,1,5);
+        HBox hBoxServerIp = new HBox(10);
+        hBoxServerIp.getChildren().addAll(serverIpField,connectButton);
+        GridPane.setConstraints(hBoxServerIp,1,0);
 
-        grid.getChildren().addAll(usernameLabel,usernameField,passwordLabel,passwordField,hBox);
+        HBox hBoxButtons = new HBox(10);
+        hBoxButtons.getChildren().addAll(loginButton,signupButton);
+        GridPane.setConstraints(hBoxButtons,1,5);
+
+        grid.getChildren().addAll(serverIpLabel,hBoxServerIp,usernameLabel,usernameField,passwordLabel,passwordField,hBoxButtons);
 
         Scene scene = new Scene(grid, 10,10);
         window.setScene(scene);
@@ -62,6 +78,26 @@ public class LoginGUI {
             @Override
             public void handle(WindowEvent event) {
                 System.exit(0);
+            }
+        });
+
+
+        connectButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    if(client.connect(serverIpField.getText())) {
+                        loginButton.setDisable(false);
+                        connectButton.setDisable(true);
+                        connectButton.setText("Connected");
+                        connectButton.setTextFill(Color.GREEN);
+                        serverIpField.setDisable(true);
+                    } else {
+                        AlertBox.display("Connection error","Connecting to server failed");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 

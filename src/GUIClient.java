@@ -1,7 +1,10 @@
 import javafx.application.Platform;
+import jdk.management.resource.internal.inst.AbstractPlainDatagramSocketImplRMHooks;
+
 import java.io.*;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.concurrent.TimeUnit;
@@ -12,7 +15,6 @@ public class GUIClient {
     InputStream inStream;
     InputStreamReader in;
     BufferedReader bf;
-    boolean connected = false;
     DataOutputStream outStream;
     PrintWriter pr;
     ClientGUI clientGUI;
@@ -28,25 +30,8 @@ public class GUIClient {
      * @throws IOException
      * @throws InterruptedException
      */
-    public void start(ClientGUI clientGUI) throws IOException, InterruptedException {
+    public void start(ClientGUI clientGUI) {
         this.clientGUI = clientGUI;
-        while (connected==false) {
-            try {
-                socket = new Socket("83.243.176.75", 42069);
-                connected=true;
-            } catch (ConnectException e) {
-                System.out.println("Failed to connect");
-                TimeUnit.SECONDS.sleep(1);
-            }
-        }
-
-        outStream = new DataOutputStream(socket.getOutputStream());
-        inStream = socket.getInputStream();
-        pr = new PrintWriter(outStream);
-        in = new InputStreamReader(socket.getInputStream());
-        bf = new BufferedReader(in);
-        receiver.start();
-
         LoginGUI.display(this);
     }
 
@@ -94,11 +79,52 @@ public class GUIClient {
                 case"signuperr":
                     AlertBox.display("Sign up error",message);
                     break;
+                case"supported":
+                    clientGUI.displayNewMessage("[SERVER] Supported commands: " + message);
+                    break;
                 default:
                     AlertBox.display("ERROR","Unknown error:\n" + string);
                     break;
             }
         } catch (StringIndexOutOfBoundsException e) {}
+    }
+
+    /**
+     * Method attempts to connect client to the server using the ip and socket given by the method call.
+     * @param ip Ip that will be used to connect to the server and socket if the string is separated using ":"
+     *           if not the default socket 42069 will be used.
+     * @return Returns if the method connected to the server successfully.
+     * @throws IOException
+     */
+    public boolean connect(String ip) throws IOException {
+        if(ip.isEmpty()) {
+            return false;
+        }
+        Boolean connected = false;
+        String IP;
+        String PORT;
+        if (ip.contains(":")) {
+            String[] chunks = ip.split(":");
+            IP = chunks[0];
+            PORT = chunks[1];
+        } else {
+            IP = ip;
+            PORT = "42069";
+        }
+        try {
+            socket = new Socket(IP, Integer.parseInt(PORT));
+            connected=true;
+
+            outStream = new DataOutputStream(socket.getOutputStream());
+            inStream = socket.getInputStream();
+            pr = new PrintWriter(outStream);
+            in = new InputStreamReader(socket.getInputStream());
+            bf = new BufferedReader(in);
+            receiver.start();
+        } catch (ConnectException e) {
+            System.out.println("Failed to connect");
+        } catch (UnknownHostException ignore) {}
+        return connected;
     }
 
     /**
