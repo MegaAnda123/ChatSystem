@@ -7,52 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="05145e39-c3d3-4482-9eab-0e408ab44860" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/ChatSystem.html" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/ChatSystem.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/ChatSystem.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/ChatSystem.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/ChatSystem.jnlp" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/ChatSystem.jnlp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem.html" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem.jnlp" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem.jnlp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/app/ChatSystem.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/app/ChatSystem.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/COPYRIGHT" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/COPYRIGHT" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/LICENSE" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/README.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/README.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/THIRDPARTYLICENSEREADME-JAVAFX.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/THIRDPARTYLICENSEREADME-JAVAFX.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/THIRDPARTYLICENSEREADME.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/THIRDPARTYLICENSEREADME.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/Welcome.html" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/Welcome.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/bin/server/Xusage.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/bin/server/Xusage.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/accessibility.properties" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/accessibility.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/amd64/jvm.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/amd64/jvm.cfg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/calendars.properties" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/calendars.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/content-types.properties" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/content-types.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/flavormap.properties" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/flavormap.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/fontconfig.properties.src" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/fontconfig.properties.src" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/hijrah-config-umalqura.properties" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/hijrah-config-umalqura.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/images/cursors/cursors.properties" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/images/cursors/cursors.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/javafx.properties" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/javafx.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/jfr/default.jfc" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/jfr/default.jfc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/jfr/profile.jfc" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/jfr/profile.jfc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/jvm.hprof.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/jvm.hprof.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/logging.properties" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/logging.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/management/jmxremote.access" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/management/jmxremote.access" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/management/jmxremote.password.template" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/management/jmxremote.password.template" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/management/management.properties" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/management/management.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/management/snmp.acl.template" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/management/snmp.acl.template" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/net.properties" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/net.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/psfont.properties.ja" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/psfont.properties.ja" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/psfontj2d.properties" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/psfontj2d.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/security/blacklist" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/security/blacklist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/security/blacklisted.certs" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/security/blacklisted.certs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/security/java.policy" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/security/java.policy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/security/javaws.policy" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/security/javaws.policy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/sound.properties" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/sound.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/tzmappings" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ChatSystem/bundles/ChatSystem/runtime/lib/tzmappings" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/ChatSystem/ClientGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ChatSystem/ClientGUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ChatSystem/Server$ReceiveString.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ChatSystem/Server$ReceiveString.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ChatSystem/Server$addClientToQueue.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ChatSystem/Server$addClientToQueue.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ChatSystem/Server$timeOutClients.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ChatSystem/Server$timeOutClients.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ChatSystem/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ChatSystem/Server.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ClientGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ClientGUI.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -95,8 +50,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ClientGUI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="173">
-              <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
+            <state relative-caret-position="436">
+              <caret line="42" column="21" lean-forward="true" selection-start-line="42" selection-start-column="21" selection-end-line="42" selection-end-column="21" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -299,8 +254,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
-        <item itemvalue="Application.ClientGUI" />
         <item itemvalue="Application.Server" />
+        <item itemvalue="Application.ClientGUI" />
         <item itemvalue="Application.TestClient" />
       </list>
     </recent_temporary>
@@ -339,12 +294,12 @@
       <window_info content_ui="combo" id="Project" order="5" visible="true" weight="0.26332623" />
       <window_info id="Structure" order="6" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="0" weight="0.32936078" />
-      <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.5042644" side_tool="true" visible="true" weight="0.32827735" />
-      <window_info anchor="bottom" id="Messages" order="2" sideWeight="0.49840087" weight="0.32936078" />
+      <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.50479746" side_tool="true" visible="true" weight="0.32827735" />
+      <window_info anchor="bottom" id="Messages" order="2" sideWeight="0.4978678" weight="0.32936078" />
       <window_info anchor="bottom" id="Version Control" order="3" weight="0.32936078" />
       <window_info anchor="bottom" id="Message" order="4" />
       <window_info anchor="bottom" id="Find" order="5" />
-      <window_info active="true" anchor="bottom" id="Run" order="6" sideWeight="0.49573562" visible="true" weight="0.32827735" />
+      <window_info active="true" anchor="bottom" id="Run" order="6" sideWeight="0.49520257" visible="true" weight="0.32827735" />
       <window_info anchor="bottom" id="Debug" order="7" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
@@ -493,8 +448,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ClientGUI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="173">
-          <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
+        <state relative-caret-position="436">
+          <caret line="42" column="21" lean-forward="true" selection-start-line="42" selection-start-column="21" selection-end-line="42" selection-end-column="21" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
