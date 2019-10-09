@@ -26,15 +26,24 @@ public class ClientGUI extends Application {
     public void ChatFieldTyping(KeyEvent ke) throws IOException {
         if (ke.getCode().equals(KeyCode.ENTER)) {
             String chatText = ChatTextField.getText();
-            if (chatText.substring(0,1).equals("/")) {
-                client.sendNewMessage(chatText.substring(1));
-            } else {
+            if(chatText.isEmpty()) {
                 if (privateMessageClient.isEmpty()) {
                     client.processOutMessage("msg", chatText);
                 } else {
                     client.processOutMessage("privmsg", privateMessageClient + " " + chatText);
                 }
+            } else {
+                if (chatText.substring(0, 1).equals("/")) {
+                    client.sendNewMessage(chatText.substring(1));
+                } else {
+                    if (privateMessageClient.isEmpty()) {
+                        client.processOutMessage("msg", chatText);
+                    } else {
+                        client.processOutMessage("privmsg", privateMessageClient + " " + chatText);
+                    }
+                }
             }
+
             ChatTextField.setText("");
         }
     }
