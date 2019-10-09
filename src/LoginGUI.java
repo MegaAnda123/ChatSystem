@@ -1,8 +1,11 @@
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -101,10 +104,32 @@ public class LoginGUI {
             }
         });
 
+
+        serverIpField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent ke) {
+                if (ke.getCode().equals(KeyCode.ENTER)) {
+
+                    try {
+                        if(client.connect(serverIpField.getText())) {
+                            loginButton.setDisable(false);
+                            connectButton.setDisable(true);
+                            connectButton.setText("Connected");
+                            connectButton.setTextFill(Color.GREEN);
+                            serverIpField.setDisable(true);
+                        } else {
+                            AlertBox.display("Connection error","Connecting to server failed");
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
         loginButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                System.out.println(signupButton.isSelected());
                 if (signupButton.isSelected()) {
                     try {
                         client.trySignup(usernameField.getText(), passwordField.getText());
@@ -120,6 +145,49 @@ public class LoginGUI {
                 }
             }
         });
+
+        usernameField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent ke) {
+                if (ke.getCode().equals(KeyCode.ENTER)) {
+                    if (signupButton.isSelected()) {
+                        try {
+                            client.trySignup(usernameField.getText(), passwordField.getText());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        try {
+                            client.tryLogin(usernameField.getText(), passwordField.getText());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        });
+
+        passwordField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent ke) {
+                if (ke.getCode().equals(KeyCode.ENTER)) {
+                    if (signupButton.isSelected()) {
+                        try {
+                            client.trySignup(usernameField.getText(), passwordField.getText());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        try {
+                            client.tryLogin(usernameField.getText(), passwordField.getText());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        });
+
         window.showAndWait();
     }
 }

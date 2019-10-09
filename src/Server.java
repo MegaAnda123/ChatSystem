@@ -13,7 +13,7 @@ public class Server {
     private addClientToQueue ClientListener = new addClientToQueue(this);
     private ReceiveString MessageReceiver = new ReceiveString(this);
     private timeOutClients timeOutClients = new timeOutClients(this);
-    private int timeOutResetValue = 5;
+    private int timeOutResetValue = 10;
 
     public static void main(String[] args) throws IOException {
         Server a = new Server();
@@ -292,6 +292,11 @@ public class Server {
         System.out.println("Client " + client.getName() + " connected");
         processOutMessage(client.getSocket(), "loginok", "");
         LoginQueue.remove(socket);
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         sendUpdatedClientList();
         client.setTimeOut(timeOutResetValue);
     }
