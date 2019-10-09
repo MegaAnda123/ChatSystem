@@ -26,7 +26,7 @@ public class DBConnector{
 
             Connection conn = DriverManager.getConnection(host, username, pass);
 
-            System.out.println("Connection established.");
+            System.out.println("SQL connection established.");
 
             return conn;
 

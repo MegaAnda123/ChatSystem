@@ -1,4 +1,5 @@
 import java.net.Socket;
+import java.sql.Connection;
 
 public class Client {
     private final String name;
@@ -7,10 +8,14 @@ public class Client {
     private boolean available = true;
     private boolean hasPassword;
     private int timeOut = 10;
+    private DBConnector DB;
+    private Connection con;
 
-    public Client(String name, String password) {
+    public Client(String name, String password, DBConnector DB, Connection con) {
         this.name = name;
         this.password = password;
+        this.DB = DB;
+        this.con = con;
         if(password.equals("")) {
             hasPassword = false;
         } else {

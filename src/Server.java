@@ -1,6 +1,7 @@
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.concurrent.TimeUnit;
@@ -13,6 +14,8 @@ public class Server {
     private addClientToQueue ClientListener = new addClientToQueue(this);
     private ReceiveString MessageReceiver = new ReceiveString(this);
     private timeOutClients timeOutClients = new timeOutClients(this);
+    private DBConnector DB;
+    private Connection con;
     private int timeOutResetValue = 10;
 
     public static void main(String[] args) throws IOException {
@@ -28,13 +31,26 @@ public class Server {
      * @throws InterruptedException
      */
     public void start() throws IOException {
+        DB = new DBConnector();
+        try {
+            con = DB.getConnection();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         serverSocket = new ServerSocket(42069);
         ClientListener.start();
         MessageReceiver.start();
         timeOutClients.start();
-        Clients.add(new Client("TEST1",""));
-        Clients.add(new Client("TEST2",""));
-        Clients.add(new Client("TEST3",""));
+        Clients.add(new Client("TEST1","", DB, con));
+        Clients.add(new Client("TEST2","", DB, con));
+        Clients.add(new Client("TEST3","", DB, con));
+
+
+        try {
+            System.out.println(DB.getUsernames(con));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -202,7 +218,7 @@ public class Server {
                 if (!(username == null)) {
                     if (!(username.contains(" "))) {
                         if(getByName(username)==null) {
-                            Client client = new Client(username, password);
+                            Client client = new Client(username, password, DB, con);
                             client.setSocket(socket);
                             Clients.add(client);
                             processOutMessage(socket, "signupok", "");
