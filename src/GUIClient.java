@@ -1,13 +1,10 @@
 import javafx.application.Platform;
-import jdk.management.resource.internal.inst.AbstractPlainDatagramSocketImplRMHooks;
-
 import java.io.*;
 import java.net.ConnectException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.util.concurrent.TimeUnit;
 
 public class GUIClient {
     Socket socket;
@@ -52,14 +49,29 @@ public class GUIClient {
 
         String[] chunks = string.split(" ");
         String command = chunks[0];
+
+        String user;
+        String msgText;
+
+        try {
+            user = chunks[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            user = "";
+        }
+        try {
+            msgText = chunks[2];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            msgText = "";
+        }
+
         try {
             String message = string.substring((chunks[0].length() + 1));
             switch (command) {
                 case"msg":
-                    clientGUI.displayNewMessage(message);
+                    clientGUI.displayNewMessage(user + ": " + msgText);
                     break;
                 case"privmsg":
-                    clientGUI.displayNewMessage(message);
+                    clientGUI.displayNewMessage(user + " (Private): " + msgText);
                     break;
                 case"loginok":
                     LoginGUI.close();
