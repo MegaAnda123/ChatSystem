@@ -41,27 +41,23 @@ public class DBConnector{
      * @return Arraylist"<String>" of all usernames in the users table
      * @throws Exception
      */
-    public ArrayList<String> getUsernames(Connection con) throws Exception{
+    public ArrayList<String> getUsernames(Connection con) throws SQLException{
 
-        try {
-            // Connects to database
-            Connection connection = con;
-            Statement stm = connection.createStatement();
+        // Connects to database
+        Connection connection = con;
+        Statement stm = connection.createStatement();
 
-            ResultSet res = stm.executeQuery("select * from users");
+        ResultSet res = stm.executeQuery("select * from users");
 
-            ArrayList<String> result = new ArrayList<String>();
+        ArrayList<String> result = new ArrayList<String>();
 
-            // cycles through each row and gets the string in column username and adds to array
-            while(res.next()){
-                result.add(res.getString("username"));
-            }
+        // cycles through each row and gets the string in column username and adds to array
+        while(res.next()){
+            result.add(res.getString("username"));
+        }
 
-            return result;
+        return result;
 
-        }catch (Exception e){System.out.println(e.getMessage());}
-
-        return null;
     }
 
 
@@ -297,4 +293,38 @@ public class DBConnector{
         }
     }
 
+    /**
+     * Get hashed password of user
+     * @param con SQL connection
+     * @param username username of user
+     * @return returns string of hashed password
+     * @throws SQLException
+     */
+    public String getHashedPassword(Connection con, String username) throws SQLException {
+
+        // Connects to database
+        Connection connection = con;
+        Statement stm = connection.createStatement();
+
+        // SQL COMMAND
+        String query = "SELECT hashpas FROM users WHERE username='"+username+"'";
+
+        //Usernames on database
+        ArrayList<String> usernames = getUsernames(con);
+        //Password
+        String pas = null;
+
+        for (String user:usernames) {
+            if (user.equals(username)){
+                // Sends query and returns result
+                ResultSet res = stm.executeQuery(query);
+                res.next();
+
+                pas=res.getString(1);
+            }
+        }
+
+
+        return pas;
+    }
 }
