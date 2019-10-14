@@ -14,7 +14,7 @@ public class GUIClient {
     BufferedReader bf;
     DataOutputStream outStream;
     PrintWriter pr;
-    GUIController clientGUI;
+    ClientGUI clientGUI;
     String usernameCache;
     String passwordCache;
 
@@ -27,7 +27,7 @@ public class GUIClient {
      * @throws IOException
      * @throws InterruptedException
      */
-    public void start(GUIController clientGUI) {
+    public void start(ClientGUI clientGUI) {
         this.clientGUI = clientGUI;
         LoginGUI.display(this);
     }

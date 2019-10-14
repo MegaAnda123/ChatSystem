@@ -29,8 +29,8 @@ public class LoginGUI {
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Login");
 
-        window.setMinWidth(420);
-        window.setMinHeight(250);
+        window.setMinWidth(350);
+        window.setMinHeight(200);
         window.setResizable(false);
 
         GridPane grid = new GridPane();

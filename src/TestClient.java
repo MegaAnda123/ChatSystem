@@ -21,7 +21,7 @@ public class TestClient {
         while (connected==false) {
 
             try {
-                socket = new Socket("10.24.180.135", 42069);
+                socket = new Socket("83.243.160.177", 42069);
                 connected=true;
             } catch (ConnectException e) {
                 System.out.println("Failed to connect");
