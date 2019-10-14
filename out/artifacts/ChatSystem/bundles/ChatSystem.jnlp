@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="ChatSystem.jar" size="35277" download="eager" />
+    <jar href="ChatSystem.jar" size="35553" download="eager" />
   </resources>
   <jfx:javafx-desc  width="600" height="400" main-class="Main"  name="ChatSystem" />
   <update check="background"/>

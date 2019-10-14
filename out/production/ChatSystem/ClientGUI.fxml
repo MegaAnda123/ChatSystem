@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane id="ChatTextField" prefHeight="554.0" prefWidth="652.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ClientGUI">
+<BorderPane id="ChatTextField" prefHeight="554.0" prefWidth="652.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="GUIController">
   <center>
     <VBox prefHeight="200.0" prefWidth="100.0">
       <children>
